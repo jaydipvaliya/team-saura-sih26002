@@ -31,7 +31,11 @@ export type IconName =
   | 'target'
   | 'info'
   | 'refresh'
-  | 'bulb';
+  | 'bulb'
+  | 'lock'
+  | 'user'
+  | 'log-out'
+  | 'key';
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   name: IconName;
@@ -329,6 +333,39 @@ export const Icon: FC<IconProps> = ({
           <path d="M9 18h6" />
           <path d="M10 22h4" />
           <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5" />
+        </svg>
+      );
+
+    case 'lock':
+      return (
+        <svg {...commonProps}>
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+      );
+
+    case 'user':
+      return (
+        <svg {...commonProps}>
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      );
+
+    case 'log-out':
+      return (
+        <svg {...commonProps}>
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+      );
+
+    case 'key':
+      return (
+        <svg {...commonProps}>
+          <path d="M21 2l-2 2m-1.5 1.5L14 9l-3-3 1.5-1.5M10 14l-4 4-2-2 4-4" />
+          <circle cx="7.5" cy="7.5" r="4.5" />
         </svg>
       );
 

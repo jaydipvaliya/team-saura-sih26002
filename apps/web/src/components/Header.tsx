@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { Icon } from './common/Icon';
+import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
   isLive: boolean;
@@ -16,6 +17,7 @@ interface HeaderProps {
   setShowLegend: Dispatch<SetStateAction<boolean>>;
   viewMode: 'operations' | 'driver';
   onToggleViewMode: () => void;
+  onOpenAuth?: () => void;
 }
 
 export default function Header({
@@ -33,7 +35,9 @@ export default function Header({
   setShowLegend,
   viewMode,
   onToggleViewMode,
+  onOpenAuth,
 }: HeaderProps) {
+  const { user, isAuthenticated, logout } = useAuth();
   return (
     <header className="command-header">
       {/* Brand / Logo */}
@@ -130,6 +134,53 @@ export default function Header({
           <Icon name={viewMode === 'driver' ? 'terminal' : 'truck'} size={14} />
           <span>{viewMode === 'driver' ? 'Operations Console' : 'Driver Mode'}</span>
         </button>
+
+        {/* Authentication State */}
+        {isAuthenticated && user ? (
+          <div className="auth-user-badge-container">
+            <div
+              className="auth-user-pill"
+              onClick={onOpenAuth}
+              title={`Logged in as ${user.email} (${user.role})`}
+            >
+              <Icon name="user" size={13} color="var(--accent-action)" />
+              <span className="auth-user-name" style={{ fontWeight: 600 }}>
+                {user.email.split('@')[0]}
+              </span>
+              <span className={`auth-user-role-tag ${user.role}`}>
+                {user.role === 'field_officer'
+                  ? 'Field Officer'
+                  : user.role === 'district_admin'
+                  ? 'District Admin'
+                  : 'MDoNER'}
+              </span>
+            </div>
+            <button
+              type="button"
+              className="auth-logout-btn"
+              onClick={logout}
+              title="Sign Out of Session"
+            >
+              <Icon name="log-out" size={13} />
+              <span>Exit</span>
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={onOpenAuth}
+            className="btn-preset btn-auth-signin"
+            title="Sign In or Register Official Account"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+            }}
+          >
+            <Icon name="lock" size={14} />
+            <span>Sign In</span>
+          </button>
+        )}
 
         <div className={`status-pill ${isLive ? 'live' : 'disconnected'}`} title={`Last refreshed: ${lastUpdated}`}>
           <span className="status-pulse" />

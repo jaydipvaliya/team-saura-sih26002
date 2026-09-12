@@ -15,6 +15,8 @@ import LoadingIndicator from './components/LoadingIndicator';
 import ErrorMessage from './components/ErrorMessage';
 import DriverMode from './components/driver/DriverMode';
 import RoleSelect from './components/RoleSelect';
+import AuthModal from './components/auth/AuthModal';
+import AuthPage from './components/auth/AuthPage';
 import { Icon } from './components/common/Icon';
 import { PRESET_CORRIDORS } from './config/map-theme';
 import { computeLiveTripProgress, type LiveTripProgress } from './utils/eta';
@@ -71,6 +73,25 @@ export default function App() {
     }
   });
   const isDriverMode = viewMode === 'driver';
+
+  // Authentication states
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('auth') === 'login' || params.get('auth') === 'modal';
+    } catch {
+      return false;
+    }
+  });
+
+  const [showAuthPage, setShowAuthPage] = useState<boolean>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('auth') === 'page' || window.location.pathname === '/auth';
+    } catch {
+      return false;
+    }
+  });
 
   // Human-readable destination label for driver turn-by-turn guidance
   const [destinationLabel, setDestinationLabel] = useState<string>('Shillong, Meghalaya');
@@ -368,6 +389,10 @@ export default function App() {
     }
   };
 
+  if (showAuthPage) {
+    return <AuthPage onBackToDashboard={() => setShowAuthPage(false)} />;
+  }
+
   return (
     <div className="app-container">
       {/* 1. Header Command Bar */}
@@ -386,6 +411,7 @@ export default function App() {
         setShowLegend={setShowLegend}
         viewMode={viewMode || 'operations'}
         onToggleViewMode={handleToggleViewMode}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
       />
 
       {/* 2. MapLibre Hero Viewport */}
@@ -595,6 +621,12 @@ export default function App() {
       {viewMode === null && (
         <RoleSelect onSelectMode={handleSelectRole} />
       )}
+
+      {/* 8. Authentication Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </div>
   );
 }
