@@ -30,7 +30,7 @@ function maneuverGlyph(text: string | undefined): string {
   if (t.includes('left')) return '←';
   if (t.includes('right')) return '→';
   if (t.includes('exit') || t.includes('ramp')) return '↗';
-  if (t.includes('arrive') || t.includes('destination')) return '⚑';
+  if (t.includes('arrive') || t.includes('destination')) return '⌖';
   return '↑';
 }
 
@@ -62,7 +62,7 @@ export default function DriverManeuverCard({
         <div className="driver-maneuver-distance">{formatDistance(primary.distanceMeters)}</div>
         <div className="driver-maneuver-text">{primary.text}</div>
         <div className="driver-maneuver-context">
-          towards {targetName} · {formatDuration(primary.durationSeconds)}
+          towards {targetName} — {formatDuration(primary.durationSeconds)}
         </div>
 
         {next && (

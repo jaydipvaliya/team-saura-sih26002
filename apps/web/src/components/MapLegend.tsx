@@ -6,6 +6,7 @@ import {
   SELECTED_ROUTE_THEME,
   BASELINE_ROUTE_THEME,
 } from '../config/map-theme';
+import { Icon } from './common/Icon';
 
 interface MapLegendProps {
   showHazardZones: boolean;
@@ -29,22 +30,22 @@ export default function MapLegend({
         bottom: 24,
         left: 20,
         zIndex: 10,
-        backgroundColor: 'rgba(15, 23, 42, 0.92)',
-        backdropFilter: 'blur(10px)',
-        border: '1px solid rgba(51, 65, 85, 0.6)',
-        borderRadius: 10,
+        backgroundColor: 'var(--color-bg-base)',
+        border: '1px solid var(--color-border-subtle)',
+        borderRadius: 8,
         padding: '12px 14px',
         width: 250,
-        boxShadow: 'var(--shadow-lg)',
+        boxShadow: 'var(--shadow-md)',
         fontSize: 11,
       }}
       className="map-legend-box"
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-        <span style={{ fontSize: 11, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-          🗺️ Operational Legend
+        <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Icon name="map" size={13} color="var(--color-accent-amber)" />
+          <span>Operational Legend</span>
         </span>
-        <span style={{ fontSize: 10, color: '#38BDF8', fontWeight: 600 }}>NER Fleet Grid</span>
+        <span style={{ fontSize: 10, color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>NER Fleet Grid</span>
       </div>
 
       {/* Routes Legend */}

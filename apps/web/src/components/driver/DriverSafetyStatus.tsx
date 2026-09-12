@@ -1,5 +1,6 @@
 import type { CandidateRouteProfile } from '../../types/api';
 import { RISK_LEVEL_FILL, ACCESSIBILITY_THEME } from '../../config/map-theme';
+import { Icon } from '../common/Icon';
 
 interface DriverSafetyStatusProps {
   selectedRoute: CandidateRouteProfile;
@@ -40,7 +41,7 @@ export default function DriverSafetyStatus({ selectedRoute, safetyStatus }: Driv
   return (
     <div className="driver-card">
       <div className="driver-nav-header">
-        <span className="driver-nav-title">ROAD SAFETY AHEAD</span>
+        <span className="driver-nav-title">Road Safety Ahead</span>
         <span
           className={`driver-pill ${safetyStatus.status === 'AVAILABLE' ? 'driver-pill-ok' : 'driver-pill-warn'}`}
         >
@@ -54,8 +55,14 @@ export default function DriverSafetyStatus({ selectedRoute, safetyStatus }: Driv
         style={{ backgroundColor: `${riskFill}1F`, borderColor: `${riskFill}59` }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 18 }}>{isHighRisk ? '⚠️' : isMedRisk ? 'ℹ️' : '✓'}</span>
-          <span style={{ color: riskFill, fontWeight: 800, fontSize: 13 }}>{riskHeadline}</span>
+          {isHighRisk ? (
+            <Icon name="alert-triangle" size={18} color={riskFill} />
+          ) : isMedRisk ? (
+            <Icon name="info" size={18} color={riskFill} />
+          ) : (
+            <Icon name="check" size={18} color={riskFill} />
+          )}
+          <span style={{ color: riskFill, fontWeight: 700, fontSize: 13 }}>{riskHeadline}</span>
         </div>
         <span style={{ color: riskFill, fontWeight: 700, fontSize: 11, fontFamily: 'var(--font-mono)' }}>
           Score: {risk.meanScore.toFixed(0)} / 100
@@ -83,7 +90,7 @@ export default function DriverSafetyStatus({ selectedRoute, safetyStatus }: Driv
         <div className="driver-safety-item" style={{ marginBottom: 8 }}>
           <span className="driver-metric-label">AI Landslide Alert</span>
           <span className="driver-metric-value driver-metric-value-sm">
-            {ml.prediction === 'LANDSLIDE_RISK' ? 'Landslide caution' : 'Clear terrain'} ·{' '}
+            {ml.prediction === 'LANDSLIDE_RISK' ? 'Landslide caution' : 'Clear terrain'} —{' '}
             {(ml.maxProbability * 100).toFixed(0)}% likelihood
           </span>
         </div>

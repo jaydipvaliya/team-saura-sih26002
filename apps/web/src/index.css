@@ -1,48 +1,82 @@
+/**
+ * SauraRoute Design System — Field Operations & Logistics Intelligence
+ * 
+ * Context: Mountain freight logistics, weather hazards, and corridor resilience
+ * in the North Eastern Region of India.
+ * 
+ * Palette: Deep Basalt Ground (#0E1216), Muted Graphite Console (#161B21),
+ * Highland Ochre (#E5983A) operational action, and strictly semantic status accents:
+ * Safe Pine (#2E8B57), Caution Amber (#D97706), Critical Vermilion (#D9383A).
+ * 
+ * Typography: Plus Jakarta Sans (humanist/industrial signage) & IBM Plex Mono (tabular telemetry).
+ * Hierarchy: 3-tier card elevation (Focal Alert / Working Tool / Inset Reference Well).
+ */
+
 :root {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Colors */
-  --bg-app: #0B0F17;
-  --bg-panel: rgba(15, 23, 42, 0.94);
-  --bg-panel-solid: #0F172A;
-  --bg-card: rgba(30, 41, 59, 0.7);
-  --bg-card-hover: rgba(51, 65, 85, 0.8);
-  --bg-card-solid: #1E293B;
-  --border-panel: rgba(51, 65, 85, 0.6);
-  --border-subtle: rgba(71, 85, 105, 0.4);
+  /* Surfaces & Structural Slate */
+  --bg-app: #0E1216;
+  --bg-panel: rgba(22, 27, 33, 0.96);
+  --bg-panel-solid: #161B21;
+  --bg-card: #1B222A;
+  --bg-card-elevated: #222B35;
+  --bg-card-inset: #13171C;
+  --bg-card-hover: #26313D;
+  --bg-card-solid: #1B222A;
 
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --text-dark: #0F172A;
+  --border-panel: #26303B;
+  --border-subtle: #202730;
+  --border-strong: #3A4756;
+  --border-focus: #E5983A;
 
-  /* Operational Accent Tokens */
-  --accent-blue: #2563EB;
-  --accent-blue-hover: #1D4ED8;
-  --accent-blue-light: #3B82F6;
-  --accent-blue-bg: rgba(37, 99, 235, 0.15);
+  --text-primary: #EDEFEA;
+  --text-secondary: #9AA5B1;
+  --text-muted: #637282;
+  --text-dark: #0E1216;
 
-  --accent-emerald: #10B981;
-  --accent-emerald-dark: #059669;
-  --accent-emerald-bg: rgba(16, 185, 129, 0.15);
+  /* Primary Operational Action — Indian Highway Ochre */
+  --accent-action: #E5983A;
+  --accent-action-hover: #D4882B;
+  --accent-action-light: #F0AB5D;
+  --accent-action-bg: rgba(229, 152, 58, 0.14);
 
-  --accent-amber: #F59E0B;
-  --accent-amber-dark: #D97706;
-  --accent-amber-bg: rgba(245, 158, 11, 0.15);
+  /* Semantic Status Tokens */
+  --status-safe: #2E8B57;
+  --status-safe-bg: rgba(46, 139, 87, 0.14);
+  --status-caution: #D97706;
+  --status-caution-bg: rgba(217, 119, 6, 0.14);
+  --status-critical: #D9383A;
+  --status-critical-bg: rgba(217, 56, 58, 0.14);
 
-  --accent-crimson: #EF4444;
-  --accent-crimson-dark: #DC2626;
-  --accent-crimson-bg: rgba(239, 68, 68, 0.15);
+  /* Legacy mappings mapped strictly to semantic palette */
+  --accent-blue: #E5983A;
+  --accent-blue-hover: #D4882B;
+  --accent-blue-light: #F0AB5D;
+  --accent-blue-bg: rgba(229, 152, 58, 0.14);
 
-  --accent-purple: #8B5CF6;
-  --accent-purple-bg: rgba(139, 92, 246, 0.15);
+  --accent-emerald: #2E8B57;
+  --accent-emerald-dark: #246B43;
+  --accent-emerald-bg: rgba(46, 139, 87, 0.14);
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 4px 12px -1px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.5);
-  --shadow-glow-blue: 0 0 15px rgba(37, 99, 235, 0.4);
-  --shadow-glow-green: 0 0 15px rgba(16, 185, 129, 0.4);
+  --accent-amber: #D97706;
+  --accent-amber-dark: #B45309;
+  --accent-amber-bg: rgba(217, 119, 6, 0.14);
+
+  --accent-crimson: #D9383A;
+  --accent-crimson-dark: #B91C1C;
+  --accent-crimson-bg: rgba(217, 56, 58, 0.14);
+
+  --accent-purple: #7C3AED;
+  --accent-purple-bg: rgba(124, 58, 237, 0.14);
+
+  /* Natural Ambient Elevations (Glow shadows removed) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow-blue: none;
+  --shadow-glow-green: none;
 }
 
 * {
@@ -123,21 +157,21 @@ html, body, #root {
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  background: linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #3B82F6 100%);
+  background: var(--accent-action);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  color: #0E1216;
   font-weight: 800;
-  font-size: 16px;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+  font-size: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .brand-title {
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #F8FAFC;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
@@ -145,7 +179,7 @@ html, body, #root {
   font-size: 11px;
   font-weight: 500;
   color: var(--text-secondary);
-  letter-spacing: 0.2px;
+  letter-spacing: 0;
 }
 
 /* Operational Badges */
@@ -154,41 +188,40 @@ html, body, #root {
   align-items: center;
   gap: 6px;
   padding: 3px 8px;
-  border-radius: 9999px;
+  border-radius: 4px;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
   text-transform: uppercase;
 }
 
 .status-pill.live {
-  background: rgba(16, 185, 129, 0.15);
-  color: #34D399;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: var(--status-safe-bg);
+  color: #4ADE80;
+  border: 1px solid rgba(46, 139, 87, 0.4);
 }
 
 .status-pill.disconnected {
-  background: rgba(239, 68, 68, 0.15);
+  background: var(--status-critical-bg);
   color: #F87171;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1px solid rgba(217, 56, 58, 0.4);
 }
 
 .status-pulse {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 6px currentColor;
 }
 
 .tag-badge {
   padding: 3px 8px;
   border-radius: 4px;
   font-size: 11px;
-  font-weight: 600;
-  background: rgba(51, 65, 85, 0.6);
-  color: #E2E8F0;
-  border: 1px solid rgba(71, 85, 105, 0.4);
+  font-weight: 500;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-panel);
 }
 
 /* Floating Deck Panels (Desktop) */
@@ -197,9 +230,8 @@ html, body, #root {
   top: 72px;
   z-index: 15;
   background: var(--bg-panel);
-  backdrop-filter: blur(12px);
   border: 1px solid var(--border-panel);
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
@@ -225,12 +257,23 @@ html, body, #root {
   gap: 16px;
 }
 
-/* Cards & Intelligence Units */
+/* Cards & Intelligence Units (Differentiated 3-tier Hierarchy) */
 .intel-card {
   background: var(--bg-card);
   border: 1px solid var(--border-panel);
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 14px;
+}
+
+.intel-card.card-primary {
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--accent-action);
+}
+
+.intel-card.card-inset {
+  background: var(--bg-card-inset);
+  border: 1px solid var(--border-subtle);
 }
 
 .intel-card-header {
@@ -241,24 +284,24 @@ html, body, #root {
 }
 
 .intel-card-title {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 /* Inputs & Form Controls */
 .coord-input {
   width: 100%;
   padding: 9px 12px;
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid #334155;
+  background: var(--bg-card-inset);
+  border: 1px solid var(--border-panel);
   border-radius: 6px;
-  color: #F8FAFC;
+  color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 12px;
   transition: border-color 0.15s, box-shadow 0.15s;
@@ -266,45 +309,48 @@ html, body, #root {
 
 .coord-input:focus {
   outline: none;
-  border-color: var(--accent-blue-light);
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+  border-color: var(--accent-action);
+  box-shadow: 0 0 0 1px var(--accent-action);
 }
 
 .btn-primary {
   width: 100%;
   padding: 11px 16px;
-  background: var(--accent-blue);
-  color: #FFFFFF;
+  background: var(--accent-action);
+  color: #0E1216;
   border: none;
   border-radius: 6px;
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.15s ease;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+  transition: background-color 0.15s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--accent-blue-hover);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.45);
+  background: var(--accent-action-hover);
+}
+
+.btn-primary:active:not(:disabled) {
+  background: #B8731F;
 }
 
 .btn-primary:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .btn-preset {
-  padding: 5px 9px;
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid #334155;
-  border-radius: 5px;
-  color: #CBD5E1;
+  padding: 5px 10px;
+  background: var(--bg-card-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-secondary);
   font-size: 11px;
   font-weight: 500;
   cursor: pointer;
@@ -312,15 +358,16 @@ html, body, #root {
 }
 
 .btn-preset:hover {
-  background: rgba(51, 65, 85, 0.9);
-  border-color: #475569;
-  color: #FFFFFF;
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
 }
 
 .btn-preset.active {
-  background: rgba(37, 99, 235, 0.2);
-  border-color: #3B82F6;
-  color: #93C5FD;
+  background: var(--accent-action-bg);
+  border-color: var(--accent-action);
+  color: var(--accent-action);
+  font-weight: 600;
 }
 
 /* Metric Display Numbers */
@@ -466,8 +513,8 @@ html, body, #root {
   width: 24px;
   height: 24px;
   border-radius: 5px;
-  background: linear-gradient(135deg, #1E40AF 0%, #2563EB 60%, #3B82F6 100%);
-  color: #FFFFFF;
+  background: var(--accent-action);
+  color: #0E1216;
   font-size: 11px;
   font-weight: 800;
   display: flex;
@@ -477,18 +524,18 @@ html, body, #root {
 
 .driver-header-name {
   font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.6px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
   color: var(--text-primary);
 }
 
 .driver-header-mode {
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.8px;
-  color: var(--accent-blue-light);
-  background: rgba(37, 99, 235, 0.18);
-  border: 1px solid rgba(59, 130, 246, 0.4);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--accent-action);
+  background: var(--accent-action-bg);
+  border: 1px solid rgba(229, 152, 58, 0.4);
   padding: 2px 6px;
   border-radius: 4px;
 }
@@ -504,22 +551,22 @@ html, body, #root {
   align-items: center;
   gap: 5px;
   font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
   padding: 3px 8px;
-  border-radius: 9999px;
+  border-radius: 4px;
 }
 
 .driver-status-on {
-  color: #34D399;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #4ADE80;
+  background: var(--status-safe-bg);
+  border: 1px solid rgba(46, 139, 87, 0.4);
 }
 
 .driver-status-off {
   color: #F87171;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: var(--status-critical-bg);
+  border: 1px solid rgba(217, 56, 58, 0.4);
 }
 
 .driver-status-dot {
@@ -527,13 +574,12 @@ html, body, #root {
   height: 6px;
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 6px currentColor;
 }
 
 .driver-header-time {
   font-size: 12px;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-weight: 600;
+  color: var(--text-secondary);
   font-family: var(--font-mono);
 }
 
@@ -576,12 +622,11 @@ html, body, #root {
   align-items: center;
   gap: 16px;
   padding: 14px 16px;
-  background: var(--bg-panel);
-  backdrop-filter: blur(12px);
+  background: var(--bg-card-elevated);
   border: 1px solid var(--border-panel);
-  border-left: 4px solid var(--accent-blue-light);
-  border-radius: 12px;
-  box-shadow: var(--shadow-lg);
+  border-left: 4px solid var(--accent-action);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
 }
 
 .driver-maneuver-context {
@@ -602,15 +647,15 @@ html, body, #root {
 
 .driver-then-label {
   font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
 .driver-then-glyph {
-  color: var(--accent-blue-light);
-  font-weight: 800;
+  color: var(--accent-action);
+  font-weight: 700;
   font-size: 14px;
 }
 
@@ -639,13 +684,13 @@ html, body, #root {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(14, 165, 233, 0.15);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  color: #38bdf8;
+  background: var(--status-caution-bg);
+  border: 1px solid rgba(217, 119, 6, 0.4);
+  color: #FBBF24;
   padding: 5px 12px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   box-shadow: var(--shadow-sm);
 }
 
@@ -654,11 +699,10 @@ html, body, #root {
   align-items: center;
   justify-content: space-between;
   padding: 12px 18px;
-  background: rgba(11, 15, 23, 0.96);
-  backdrop-filter: blur(12px);
+  background: var(--bg-card-elevated);
   border: 1px solid var(--border-panel);
-  border-radius: 12px;
-  box-shadow: var(--shadow-lg);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
 }
 
 .driver-eta-cell {
@@ -668,20 +712,20 @@ html, body, #root {
 }
 
 .driver-eta-value {
-  font-size: 22px;
-  font-weight: 800;
+  font-size: 20px;
+  font-weight: 700;
   font-family: var(--font-mono);
-  color: #FFFFFF;
+  color: var(--text-primary);
   line-height: 1;
 }
 
 .driver-eta-unit,
 .driver-eta-label {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.3px;
 }
 
 .driver-eta-divider {
@@ -691,11 +735,11 @@ html, body, #root {
 }
 
 .driver-safety-banner {
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid;
   border-left-width: 4px;
   padding: 12px 14px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .driver-safety-main {
@@ -1099,14 +1143,14 @@ html, body, #root {
 }
 
 .driver-nav-btn.active {
-  color: var(--accent-blue-light);
-  background: rgba(37, 99, 235, 0.1);
-  border-top: 2px solid var(--accent-blue-light);
+  color: var(--accent-action);
+  background: var(--accent-action-bg);
+  border-top: 2px solid var(--accent-action);
 }
 
 .driver-nav-exit {
   flex: 0 0 64px;
-  color: #F87171;
+  color: var(--status-critical);
 }
 
 .driver-nav-badge {
@@ -1118,7 +1162,7 @@ html, body, #root {
   height: 16px;
   padding: 0 4px;
   border-radius: 8px;
-  background: var(--accent-crimson);
+  background: var(--status-critical);
   color: #FFFFFF;
   font-size: 9px;
   font-weight: 800;
@@ -1185,7 +1229,7 @@ html, body, #root {
   width: 100%;
   height: 3px;
   border-radius: 2px;
-  background-color: rgba(51, 65, 85, 0.6);
+  background-color: var(--border-subtle);
   overflow: hidden;
 }
 
@@ -1195,7 +1239,7 @@ html, body, #root {
   inset: 0 auto 0 0;
   width: 30%;
   border-radius: 2px;
-  background: linear-gradient(90deg, transparent, #38BDF8, transparent);
+  background: linear-gradient(90deg, transparent, var(--accent-action), transparent);
   animation: indeterminate-sweep 1.15s ease-in-out infinite;
 }
 
@@ -1206,8 +1250,8 @@ html, body, #root {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(5, 8, 15, 0.88);
-  backdrop-filter: blur(14px);
+  background: rgba(8, 11, 14, 0.9);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1217,11 +1261,11 @@ html, body, #root {
 .role-select-card {
   max-width: 520px;
   width: 100%;
-  background: #0F172A;
-  border: 1px solid #334155;
-  border-radius: 16px;
+  background: var(--bg-panel-solid);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
   padding: 28px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -1232,16 +1276,16 @@ html, body, #root {
 }
 
 .role-select-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: #F8FAFC;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
   margin: 0 0 6px;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
 }
 
 .role-select-subtitle {
   font-size: 13px;
-  color: #94A3B8;
+  color: var(--text-secondary);
   line-height: 1.45;
   margin: 0;
 }
@@ -1255,39 +1299,35 @@ html, body, #root {
 .role-option-btn {
   min-height: 84px;
   padding: 16px 18px;
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 16px;
   text-align: left;
   cursor: pointer;
-  transition: all 0.18s ease-in-out;
+  transition: all 0.15s ease;
   font-family: inherit;
   width: 100%;
 }
 
 .role-option-driver {
-  border: 1.5px solid rgba(16, 185, 129, 0.45);
-  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(46, 139, 87, 0.4);
+  background: rgba(46, 139, 87, 0.08);
 }
 
 .role-option-driver:hover {
-  background: rgba(16, 185, 129, 0.18);
-  border-color: #10B981;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+  background: rgba(46, 139, 87, 0.16);
+  border-color: var(--status-safe);
 }
 
 .role-option-operations {
-  border: 1.5px solid rgba(59, 130, 246, 0.45);
-  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(229, 152, 58, 0.4);
+  background: rgba(229, 152, 58, 0.08);
 }
 
 .role-option-operations:hover {
-  background: rgba(59, 130, 246, 0.18);
-  border-color: #3B82F6;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+  background: rgba(229, 152, 58, 0.16);
+  border-color: var(--accent-action);
 }
 
 .role-option-icon {

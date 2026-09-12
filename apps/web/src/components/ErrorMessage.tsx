@@ -1,3 +1,5 @@
+import { Icon } from './common/Icon';
+
 interface ErrorMessageProps {
   title?: string;
   message: string;
@@ -5,7 +7,7 @@ interface ErrorMessageProps {
 }
 
 export default function ErrorMessage({
-  title = 'ROUTE CALCULATION FAILED',
+  title = 'Route Calculation Failed',
   message,
   onRetry,
 }: ErrorMessageProps) {
@@ -16,8 +18,8 @@ export default function ErrorMessage({
     <div
       style={{
         padding: '12px 14px',
-        backgroundColor: 'rgba(239, 68, 68, 0.12)',
-        border: '1px solid rgba(239, 68, 68, 0.4)',
+        backgroundColor: 'rgba(217, 56, 58, 0.12)',
+        border: '1px solid rgba(217, 56, 58, 0.35)',
         borderRadius: 8,
         color: '#FCA5A5',
         display: 'flex',
@@ -27,8 +29,8 @@ export default function ErrorMessage({
       role="alert"
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 800, fontSize: 11, color: '#F87171', letterSpacing: 0.5 }}>
-          <span>⚠️</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 11, color: 'var(--color-status-danger)', letterSpacing: 0.3 }}>
+          <Icon name="alert-triangle" size={14} color="var(--color-status-danger)" />
           <span>{title}</span>
         </div>
         {onRetry && (
@@ -36,12 +38,12 @@ export default function ErrorMessage({
             onClick={onRetry}
             style={{
               padding: '3px 10px',
-              backgroundColor: 'rgba(239, 68, 68, 0.25)',
-              border: '1px solid #EF4444',
+              backgroundColor: 'rgba(217, 56, 58, 0.2)',
+              border: '1px solid var(--color-status-danger)',
               borderRadius: 4,
               color: '#FFFFFF',
               fontSize: 11,
-              fontWeight: 700,
+              fontWeight: 600,
               cursor: 'pointer',
               transition: 'background-color 0.15s ease',
             }}

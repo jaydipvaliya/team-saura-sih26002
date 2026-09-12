@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
+import { Icon } from './common/Icon';
 
 interface HeaderProps {
   isLive: boolean;
@@ -41,8 +42,8 @@ export default function Header({
           SR
         </div>
         <div>
-          <div className="brand-title">SAURAROUTE</div>
-          <div className="brand-subtitle">AI Logistics &amp; Resilience Intelligence</div>
+          <div className="brand-title">SauraRoute</div>
+          <div className="brand-subtitle">North Eastern Region Corridor Intelligence</div>
         </div>
       </div>
 
@@ -51,90 +52,62 @@ export default function Header({
         style={{
           display: viewMode === 'driver' ? 'none' : 'flex',
           alignItems: 'center',
-          gap: 12,
+          gap: 8,
         }}
         className="desktop-telemetry"
       >
         <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: '#94A3B8', fontSize: 10 }}>REGION</span>
-          <span style={{ fontWeight: 700, color: '#38BDF8' }}>NER CORRIDOR</span>
+          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>REGION</span>
+          <span style={{ fontWeight: 600, color: 'var(--accent-action)' }}>NER Corridors</span>
         </div>
 
         <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: '#94A3B8', fontSize: 10 }}>FLEET</span>
-          <span style={{ fontWeight: 700, color: '#10B981' }}>{vehicleCount} Active</span>
+          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>FLEET</span>
+          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{vehicleCount} Active</span>
         </div>
 
         <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: '#94A3B8', fontSize: 10 }}>REGION INCIDENTS</span>
-          <span style={{ fontWeight: 700, color: incidentCount > 0 ? '#F87171' : '#94A3B8' }}>
-            {incidentCount} Live
+          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>INCIDENTS</span>
+          <span style={{ fontWeight: 600, color: incidentCount > 0 ? 'var(--status-caution)' : 'var(--text-muted)' }}>
+            {incidentCount} Reported
           </span>
         </div>
 
         <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: '#94A3B8', fontSize: 10 }}>HISTORICAL CATALOG</span>
-          <span style={{ fontWeight: 700, color: '#C084FC' }}>{hazardZoneCount} Zones</span>
+          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>HAZARD ZONES</span>
+          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{hazardZoneCount} Zones</span>
         </div>
 
         <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: '#94A3B8', fontSize: 10 }}>MONITORED HIGHWAYS</span>
-          <span style={{ fontWeight: 700, color: '#A78BFA' }}>{accessibilityCount} Corridors</span>
+          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>CORRIDORS</span>
+          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{accessibilityCount} Monitored</span>
         </div>
       </div>
 
       {/* Right Actions & Live Status */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         {viewMode === 'operations' && (
           <>
-            {/* Toggle Panel Buttons for Quick Visibility */}
             <button
               onClick={() => setShowLeftPanel(!showLeftPanel)}
+              className={`btn-preset ${showLeftPanel ? 'active' : ''}`}
               title={showLeftPanel ? 'Hide Route Planner' : 'Show Route Planner'}
-              style={{
-                padding: '5px 9px',
-                background: showLeftPanel ? 'rgba(37, 99, 235, 0.2)' : 'rgba(30, 41, 59, 0.8)',
-                border: `1px solid ${showLeftPanel ? '#3B82F6' : '#334155'}`,
-                color: showLeftPanel ? '#93C5FD' : '#94A3B8',
-                borderRadius: 6,
-                cursor: 'pointer',
-                fontSize: 11,
-                fontWeight: 600,
-              }}
             >
               Planner
             </button>
 
             <button
               onClick={() => setShowRightPanel(!showRightPanel)}
-              title={showRightPanel ? 'Hide Risk & Intelligence' : 'Show Risk & Intelligence'}
-              style={{
-                padding: '5px 9px',
-                background: showRightPanel ? 'rgba(37, 99, 235, 0.2)' : 'rgba(30, 41, 59, 0.8)',
-                border: `1px solid ${showRightPanel ? '#3B82F6' : '#334155'}`,
-                color: showRightPanel ? '#93C5FD' : '#94A3B8',
-                borderRadius: 6,
-                cursor: 'pointer',
-                fontSize: 11,
-                fontWeight: 600,
-              }}
+              className={`btn-preset ${showRightPanel ? 'active' : ''}`}
+              title={showRightPanel ? 'Hide Intelligence Panel' : 'Show Intelligence Panel'}
             >
               Intelligence
             </button>
 
             <button
               onClick={() => setShowLegend(!showLegend)}
+              className={`btn-preset ${showLegend ? 'active' : ''}`}
               title={showLegend ? 'Hide Map Legend' : 'Show Map Legend'}
-              style={{
-                padding: '5px 9px',
-                background: showLegend ? 'rgba(139, 92, 246, 0.2)' : 'rgba(30, 41, 59, 0.8)',
-                border: `1px solid ${showLegend ? '#8B5CF6' : '#334155'}`,
-                color: showLegend ? '#C4B5FD' : '#94A3B8',
-                borderRadius: 6,
-                cursor: 'pointer',
-                fontSize: 11,
-                fontWeight: 600,
-              }}
             >
               Legend
             </button>
@@ -143,19 +116,19 @@ export default function Header({
 
         <button
           onClick={onToggleViewMode}
+          className="btn-preset"
           title={viewMode === 'operations' ? 'Switch to Driver Mode' : 'Switch to Command Center'}
           style={{
-            padding: '5px 10px',
-            background: viewMode === 'driver' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(37, 99, 235, 0.2)',
-            border: `1px solid ${viewMode === 'driver' ? '#10B981' : '#3B82F6'}`,
-            color: viewMode === 'driver' ? '#34D399' : '#93C5FD',
-            borderRadius: 6,
-            cursor: 'pointer',
-            fontSize: 11,
-            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontWeight: 600,
+            borderColor: viewMode === 'driver' ? 'var(--status-safe)' : 'var(--accent-action)',
+            color: viewMode === 'driver' ? '#4ADE80' : 'var(--accent-action)',
           }}
         >
-          {viewMode === 'driver' ? 'Command Center' : 'Driver Mode'}
+          <Icon name={viewMode === 'driver' ? 'terminal' : 'truck'} size={14} />
+          <span>{viewMode === 'driver' ? 'Operations Console' : 'Driver Mode'}</span>
         </button>
 
         <div className={`status-pill ${isLive ? 'live' : 'disconnected'}`} title={`Last refreshed: ${lastUpdated}`}>
