@@ -28,8 +28,12 @@ import {
   updateAccessibilityStatus,
 } from '../controllers/accessibility.controller.js';
 import { listAlerts } from '../controllers/alert.controller.js';
+import authRoutes from './auth.routes.js';
 
 const router = Router();
+
+// Auth
+router.use('/auth', authRoutes);
 
 // Health
 router.get('/health', healthCheck);
