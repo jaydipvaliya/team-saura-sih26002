@@ -28,7 +28,7 @@ function maneuverGlyph(text: string | undefined): string {
   if (t.includes('left')) return '←';
   if (t.includes('right')) return '→';
   if (t.includes('exit') || t.includes('ramp')) return '↗';
-  if (t.includes('arrive') || t.includes('destination')) return '⚑';
+  if (t.includes('arrive') || t.includes('destination')) return '⌖';
   return '↑';
 }
 
@@ -49,7 +49,7 @@ export default function DriverNavigationCard({ selectedRoute }: DriverNavigation
   return (
     <div className="driver-card">
       <div className="driver-nav-header">
-        <span className="driver-nav-title">FULL GUIDANCE</span>
+        <span className="driver-nav-title">Full Guidance</span>
         <span className="driver-nav-steps">{instructions.length} steps</span>
       </div>
 

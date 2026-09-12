@@ -1,6 +1,7 @@
 import type { CandidateRouteProfile } from '../types/api';
 import { RISK_LEVEL_THEME } from '../config/map-theme';
 import RouteRiskProfile from './RouteRiskProfile';
+import { Icon } from './common/Icon';
 
 interface RiskPanelProps {
   selectedRoute: CandidateRouteProfile;
@@ -24,27 +25,24 @@ export default function RiskPanel({ selectedRoute, safetyStatus }: RiskPanelProp
     ? `${(ml.maxProbability * 100).toFixed(1)}% probability`
     : 'Not available';
 
-
   return (
     <div className="intel-card">
       <div className="intel-card-header">
         <span className="intel-card-title">
-          <span>🛡️</span>
-          <span>AI Route Risk Intelligence</span>
+          <Icon name="shield" size={15} style={{ color: riskTheme.color }} />
+          <span>Route Risk Intelligence</span>
         </span>
         <span
+          className="tag-badge"
           style={{
             fontSize: 10,
-            fontWeight: 800,
-            padding: '2px 7px',
-            borderRadius: 4,
+            fontWeight: 700,
             backgroundColor: riskTheme.bg,
             color: riskTheme.color,
-            border: `1px solid ${riskTheme.border}`,
-            textTransform: 'uppercase',
+            borderColor: riskTheme.border,
           }}
         >
-          {risk.overallLevel} RISK TIER
+          {risk.overallLevel} Risk
         </span>
       </div>
 
@@ -55,25 +53,25 @@ export default function RiskPanel({ selectedRoute, safetyStatus }: RiskPanelProp
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '8px 12px',
-          backgroundColor: 'rgba(30, 41, 59, 0.6)',
-          border: '1px solid #334155',
+          backgroundColor: 'var(--bg-card-inset)',
+          border: '1px solid var(--border-subtle)',
           borderRadius: 6,
           fontSize: 11,
           marginBottom: 8,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 13 }}>⛰️</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Icon name="mountain" size={14} style={{ color: 'var(--accent-action)' }} />
           <div>
-            <div style={{ fontSize: 9, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-              PRIMARY RISK DRIVER
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>
+              Primary Hazard Driver
             </div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: '#F8FAFC' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', marginTop: 1 }}>
               {risk.dominantTrigger || 'Not available'}
             </div>
           </div>
         </div>
-        <span style={{ fontSize: 10, color: '#38BDF8', fontWeight: 600 }}>Dominant</span>
+        <span style={{ fontSize: 10, color: 'var(--accent-action)', fontWeight: 600 }}>Dominant</span>
       </div>
 
       {/* 2. ML Hazard Prediction Card */}
@@ -81,21 +79,21 @@ export default function RiskPanel({ selectedRoute, safetyStatus }: RiskPanelProp
         <div
           style={{
             padding: '10px 12px',
-            backgroundColor: ml.prediction === 'LANDSLIDE_RISK' ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)',
-            border: `1px solid ${ml.prediction === 'LANDSLIDE_RISK' ? 'rgba(239, 68, 68, 0.35)' : 'rgba(16, 185, 129, 0.35)'}`,
+            backgroundColor: ml.prediction === 'LANDSLIDE_RISK' ? 'var(--status-critical-bg)' : 'var(--status-safe-bg)',
+            border: `1px solid ${ml.prediction === 'LANDSLIDE_RISK' ? 'rgba(217, 56, 58, 0.4)' : 'rgba(46, 139, 87, 0.4)'}`,
             borderRadius: 6,
             marginBottom: 8,
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-            <div style={{ fontSize: 9, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-              ML HAZARD PREDICTION (WAYPOINT CLASSIFIER)
+            <div style={{ fontSize: 10, color: 'var(--text-secondary)', fontWeight: 600 }}>
+              Waypoint Landslide Prediction
             </div>
             <span
               style={{
                 fontSize: 10,
-                fontWeight: 800,
-                color: ml.prediction === 'LANDSLIDE_RISK' ? '#F87171' : '#34D399',
+                fontWeight: 600,
+                color: ml.prediction === 'LANDSLIDE_RISK' ? 'var(--status-critical)' : '#4ADE80',
                 fontFamily: 'var(--font-mono)',
               }}
             >
@@ -103,10 +101,11 @@ export default function RiskPanel({ selectedRoute, safetyStatus }: RiskPanelProp
             </span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ fontSize: 13, fontWeight: 800, color: ml.prediction === 'LANDSLIDE_RISK' ? '#F87171' : '#34D399' }}>
-              🤖 {mlPredictionFormatted}
+            <div style={{ fontSize: 12, fontWeight: 700, color: ml.prediction === 'LANDSLIDE_RISK' ? 'var(--status-critical)' : '#4ADE80', display: 'flex', alignItems: 'center', gap: 5 }}>
+              <Icon name={ml.prediction === 'LANDSLIDE_RISK' ? 'alert-triangle' : 'check'} size={13} />
+              <span>{mlPredictionFormatted}</span>
             </div>
-            <div style={{ fontSize: 10, color: '#94A3B8' }}>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>
               Tier: {ml.riskTier || 'LOW'}
             </div>
           </div>
@@ -120,21 +119,21 @@ export default function RiskPanel({ selectedRoute, safetyStatus }: RiskPanelProp
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '12px 14px',
-          backgroundColor: 'rgba(15, 23, 42, 0.8)',
+          backgroundColor: 'var(--bg-card-inset)',
           border: `1px solid ${riskTheme.border}`,
-          borderRadius: 8,
+          borderRadius: 6,
           marginBottom: 8,
         }}
       >
         <div>
-          <div style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            OVERALL ROUTE RISK (CORRIDOR AGGREGATE)
+          <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-muted)' }}>
+            Corridor Aggregate Exposure
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginTop: 2 }}>
             <span
               style={{
-                fontSize: 28,
-                fontWeight: 800,
+                fontSize: 24,
+                fontWeight: 700,
                 fontFamily: 'var(--font-mono)',
                 color: riskTheme.color,
                 lineHeight: 1,
@@ -142,16 +141,16 @@ export default function RiskPanel({ selectedRoute, safetyStatus }: RiskPanelProp
             >
               {risk.meanScore.toFixed(1)}
             </span>
-            <span style={{ fontSize: 13, color: '#94A3B8', fontWeight: 600 }}>/ 100</span>
+            <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 500 }}>/ 100</span>
           </div>
         </div>
 
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: 10, color: '#94A3B8', fontWeight: 600 }}>PEAK EXPOSURE</div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: '#F8FAFC', fontFamily: 'var(--font-mono)' }}>
+          <div style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>Peak Exposure</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', marginTop: 1 }}>
             {risk.maxScore.toFixed(1)}
           </div>
-          <div style={{ fontSize: 10, color: risk.hazardousSegmentCount > 0 ? '#F87171' : '#34D399', fontWeight: 600, marginTop: 2 }}>
+          <div style={{ fontSize: 10, color: risk.hazardousSegmentCount > 0 ? 'var(--status-critical)' : '#4ADE80', fontWeight: 500, marginTop: 2 }}>
             {risk.hazardousSegmentCount} On-Route Hazard Zone{risk.hazardousSegmentCount === 1 ? '' : 's'}
           </div>
         </div>
@@ -161,16 +160,16 @@ export default function RiskPanel({ selectedRoute, safetyStatus }: RiskPanelProp
       <div
         style={{
           fontSize: 10,
-          color: '#94A3B8',
+          color: 'var(--text-muted)',
           lineHeight: 1.4,
           padding: '6px 8px',
-          backgroundColor: 'rgba(15, 23, 42, 0.5)',
+          backgroundColor: 'var(--bg-card-inset)',
           borderRadius: 4,
-          borderLeft: '2px solid #3B82F6',
+          borderLeft: '2px solid var(--accent-action)',
           marginBottom: 10,
         }}
       >
-        <em>Note: ML Hazard Prediction classifies localized landslide risk at sampled waypoints, while Overall Route Risk is a cumulative composite score reflecting terrain slope, rainfall, and historical corridor hotspots.</em>
+        <em>Note: Localized landslide risk is evaluated at sampled waypoints, while corridor exposure is a multi-factor score reflecting slope, precipitation, and historical hotspots.</em>
       </div>
 
       {/* Degraded Risk Advisory */}
@@ -178,15 +177,19 @@ export default function RiskPanel({ selectedRoute, safetyStatus }: RiskPanelProp
         <div
           style={{
             marginBottom: 10,
-            padding: '6px 10px',
-            backgroundColor: 'rgba(245, 158, 11, 0.15)',
-            border: '1px solid rgba(245, 158, 11, 0.35)',
+            padding: '7px 10px',
+            backgroundColor: 'var(--status-caution-bg)',
+            border: '1px solid rgba(217, 119, 6, 0.4)',
             borderRadius: 6,
             fontSize: 11,
-            color: '#FCD34D',
+            color: '#FBBF24',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
           }}
         >
-          ⚠️ <strong>Degraded telemetry:</strong> {safetyStatus.reason || 'Telemetry data is partial.'}
+          <Icon name="alert-triangle" size={13} style={{ flexShrink: 0 }} />
+          <span><strong>Degraded telemetry:</strong> {safetyStatus.reason || 'Telemetry data is partial.'}</span>
         </div>
       )}
 

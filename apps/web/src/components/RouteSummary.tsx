@@ -1,5 +1,6 @@
 import type { CandidateRouteProfile } from '../types/api';
 import { RISK_LEVEL_THEME, RISK_LEVEL_FILL } from '../config/map-theme';
+import { Icon } from './common/Icon';
 
 interface RouteSummaryProps {
   selectedRoute: CandidateRouteProfile;
@@ -19,43 +20,42 @@ export default function RouteSummary({ selectedRoute, strategy, preference }: Ro
   const riskFill = RISK_LEVEL_FILL[risk.overallLevel] ?? RISK_LEVEL_FILL.MEDIUM;
 
   return (
-    <div className="intel-card" style={{ borderLeft: '4px solid #2563EB' }}>
+    <div className="intel-card card-primary">
       <div className="intel-card-header">
-        <span className="intel-card-title" style={{ color: '#60A5FA' }}>
-          <span>📍</span>
-          <span>SELECTED ROUTE INTELLIGENCE</span>
+        <span className="intel-card-title">
+          <Icon name="route" size={15} style={{ color: 'var(--accent-action)' }} />
+          <span>Selected Route Intelligence</span>
         </span>
-        <span
-          style={{
-            fontSize: 10,
-            fontWeight: 800,
-            padding: '2px 7px',
-            borderRadius: 4,
-            backgroundColor: strategy === 'SAFETY_OPTIMIZED' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(59, 130, 246, 0.2)',
-            color: strategy === 'SAFETY_OPTIMIZED' ? '#34D399' : '#93C5FD',
-            border: `1px solid ${strategy === 'SAFETY_OPTIMIZED' ? 'rgba(16, 185, 129, 0.4)' : 'rgba(59, 130, 246, 0.4)'}`,
-          }}
-        >
-          {preference} · {strategy === 'SAFETY_OPTIMIZED' ? 'SAFER' : 'BASELINE'}
-        </span>
+        <div style={{ display: 'flex', gap: 4 }}>
+          <span className="tag-badge">{preference}</span>
+          <span
+            className="tag-badge"
+            style={{
+              color: strategy === 'SAFETY_OPTIMIZED' ? '#4ADE80' : 'var(--text-secondary)',
+              borderColor: strategy === 'SAFETY_OPTIMIZED' ? 'rgba(46, 139, 87, 0.5)' : 'var(--border-subtle)',
+            }}
+          >
+            {strategy === 'SAFETY_OPTIMIZED' ? 'Safety Optimized' : 'Speed Baseline'}
+          </span>
+        </div>
       </div>
 
       {/* Primary Telemetry Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
         {/* Distance Card */}
         <div
           style={{
             padding: '10px 12px',
-            backgroundColor: 'rgba(15, 23, 42, 0.7)',
-            border: '1px solid #334155',
+            backgroundColor: 'var(--bg-card-inset)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: 6,
           }}
         >
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>
             Distance
           </div>
-          <div style={{ fontSize: 20, color: '#F8FAFC' }} className="metric-value">
-            {distanceKm} <span style={{ fontSize: 13, fontWeight: 500, color: '#94A3B8' }}>km</span>
+          <div style={{ fontSize: 18, color: 'var(--text-primary)', marginTop: 2 }} className="metric-value">
+            {distanceKm} <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>km</span>
           </div>
         </div>
 
@@ -63,15 +63,15 @@ export default function RouteSummary({ selectedRoute, strategy, preference }: Ro
         <div
           style={{
             padding: '10px 12px',
-            backgroundColor: 'rgba(15, 23, 42, 0.7)',
-            border: '1px solid #334155',
+            backgroundColor: 'var(--bg-card-inset)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: 6,
           }}
         >
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>
             Estimated Travel
           </div>
-          <div style={{ fontSize: 20, color: '#F8FAFC' }} className="metric-value">
+          <div style={{ fontSize: 18, color: 'var(--text-primary)', marginTop: 2 }} className="metric-value">
             {durationText}
           </div>
         </div>
@@ -81,8 +81,8 @@ export default function RouteSummary({ selectedRoute, strategy, preference }: Ro
       <div
         style={{
           padding: '10px 12px',
-          backgroundColor: `${riskFill}1F`,
-          border: `1px solid ${riskFill}59`,
+          backgroundColor: `${riskFill}15`,
+          border: `1px solid ${riskFill}40`,
           borderRadius: 6,
           display: 'flex',
           alignItems: 'center',
@@ -90,19 +90,22 @@ export default function RouteSummary({ selectedRoute, strategy, preference }: Ro
         }}
       >
         <div>
-          <div style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', letterSpacing: 0.5, textTransform: 'uppercase' }}>
-            SAFETY RISK ASSESSMENT
+          <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: 0.3, textTransform: 'uppercase' }}>
+            Risk Assessment
           </div>
-          <div style={{ fontSize: 12, fontWeight: 700, color: riskFill, marginTop: 2 }}>
-            {riskTheme.label} · Dominant: {risk.dominantTrigger}
+          <div style={{ fontSize: 12, fontWeight: 600, color: riskFill, marginTop: 2 }}>
+            <span>{riskTheme.label}</span>
+            <span style={{ color: 'var(--text-secondary)', fontWeight: 400, marginLeft: 6 }}>
+              Primary concern: {risk.dominantTrigger}
+            </span>
           </div>
         </div>
 
         <div style={{ textAlign: 'right' }}>
           <div
             style={{
-              fontSize: 22,
-              fontWeight: 800,
+              fontSize: 20,
+              fontWeight: 700,
               fontFamily: 'var(--font-mono)',
               color: riskFill,
               lineHeight: 1,
@@ -110,8 +113,8 @@ export default function RouteSummary({ selectedRoute, strategy, preference }: Ro
           >
             {risk.meanScore.toFixed(1)}
           </div>
-          <div style={{ fontSize: 9, fontWeight: 600, color: '#94A3B8', marginTop: 2 }}>
-            PEAK: {risk.maxScore.toFixed(1)}
+          <div style={{ fontSize: 10, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>
+            Peak: {risk.maxScore.toFixed(1)}
           </div>
         </div>
       </div>

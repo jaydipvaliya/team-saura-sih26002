@@ -10,6 +10,19 @@ import {
 } from '../types/incident.types.js';
 import { validateStatusTransition } from '../utils/validation.js';
 
+// Extend the incident data model to support photoUrl and photoUrls
+declare module '../types/incident.types.js' {
+  interface IncidentRecord {
+    photoUrl?: string | null;
+    photoUrls?: string[];
+  }
+}
+
+export interface IncidentRecordWithPhoto extends IncidentRecord {
+  photoUrl?: string | null;
+  photoUrls?: string[];
+}
+
 // In-memory store fallback with initial seed data
 const inMemoryIncidents = new Map<string, IncidentRecord>([
   [
@@ -25,6 +38,8 @@ const inMemoryIncidents = new Map<string, IncidentRecord>([
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       resolved_at: null,
+      photoUrl: null,
+      photoUrls: [],
     },
   ],
 ]);
@@ -36,9 +51,13 @@ export class IncidentService {
     description: string;
     latitude: number;
     longitude: number;
+    photoUrl?: string | null;
+    photoUrls?: string[];
   }): Promise<IncidentRecord> {
     const id = `inc_${crypto.randomUUID().slice(0, 8)}`;
     const now = new Date().toISOString();
+    const photoUrl = params.photoUrl ?? (params.photoUrls && params.photoUrls.length > 0 ? params.photoUrls[0] : null);
+    const photoUrls = params.photoUrls ?? (photoUrl ? [photoUrl] : []);
 
     if (getDbAvailability()) {
       try {
@@ -57,7 +76,11 @@ export class IncidentService {
             params.longitude, // PostGIS MakePoint takes (X/lon, Y/lat)
             params.latitude,
           ]);
-          const record = rows[0] as IncidentRecord;
+          const record = {
+            ...rows[0],
+            photoUrl,
+            photoUrls,
+          } as IncidentRecord;
           inMemoryIncidents.set(record.id, record);
           return record;
         } finally {
@@ -80,6 +103,8 @@ export class IncidentService {
       created_at: now,
       updated_at: now,
       resolved_at: null,
+      photoUrl,
+      photoUrls,
     };
     inMemoryIncidents.set(id, fallbackRecord);
     return fallbackRecord;
@@ -144,23 +169,31 @@ export class IncidentService {
 
     // Convert records to GeoJSON FeatureCollection
     // NOTE: GeoJSON requires coordinates: [longitude, latitude]
-    const features: IncidentFeature[] = records.map(r => ({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [Number(r.longitude), Number(r.latitude)], // [lon, lat]
-      },
-      properties: {
-        id: r.id,
-        type: r.type,
-        severity: r.severity,
-        description: r.description,
-        status: r.status,
-        createdAt: r.created_at,
-        updatedAt: r.updated_at,
-        resolvedAt: r.resolved_at || null,
-      },
-    }));
+    const features: IncidentFeature[] = records.map(r => {
+      const mem = inMemoryIncidents.get(r.id);
+      const photoUrl = r.photoUrl ?? mem?.photoUrl ?? (r.photoUrls && r.photoUrls.length > 0 ? r.photoUrls[0] : null);
+      const photoUrls = r.photoUrls ?? mem?.photoUrls ?? (photoUrl ? [photoUrl] : []);
+
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [Number(r.longitude), Number(r.latitude)], // [lon, lat]
+        },
+        properties: {
+          id: r.id,
+          type: r.type,
+          severity: r.severity,
+          description: r.description,
+          status: r.status,
+          createdAt: r.created_at,
+          updatedAt: r.updated_at,
+          resolvedAt: r.resolved_at || null,
+          photoUrl: photoUrl ?? null,
+          photoUrls: photoUrls ?? [],
+        } as any,
+      };
+    });
 
     return {
       type: 'FeatureCollection',
@@ -193,7 +226,12 @@ export class IncidentService {
             RETURNING id, type, severity, description, ST_X(location) as longitude, ST_Y(location) as latitude, status, created_at, updated_at, resolved_at;
           `;
           const { rows } = await client.query(query, [newStatus, id]);
-          const record = rows[0] as IncidentRecord;
+          const mem = inMemoryIncidents.get(id);
+          const record = {
+            ...rows[0],
+            photoUrl: mem?.photoUrl ?? null,
+            photoUrls: mem?.photoUrls ?? [],
+          } as IncidentRecord;
           inMemoryIncidents.set(record.id, record);
           return record;
         } finally {

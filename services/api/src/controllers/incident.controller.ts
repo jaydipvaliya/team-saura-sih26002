@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { incidentService } from '../services/incident.service.js';
+import { upload } from '../middleware/upload.js';
 import {
   validateCoordinates,
   validateIncidentType,
@@ -8,8 +9,35 @@ import {
   ValidationError,
 } from '../utils/validation.js';
 
+function parseMultipartFormData(req: Request, res: Response): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (Boolean(req.is('multipart/form-data') || req.is('multipart'))) {
+      upload.any()(req, res, (err: unknown) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    } else {
+      resolve();
+    }
+  });
+}
+
 export async function createIncident(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
+    try {
+      await parseMultipartFormData(req, res);
+    } catch (uploadErr) {
+      const message = uploadErr instanceof Error ? uploadErr.message : 'File upload failed.';
+      res.status(400).json({
+        status: 'error',
+        message,
+      });
+      return;
+    }
+
     const { type, severity, description, latitude, longitude } = req.body;
 
     if (!description || typeof description !== 'string' || description.trim().length === 0) {
@@ -24,12 +52,47 @@ export async function createIncident(req: Request, res: Response, next: NextFunc
     const validatedSeverity = validateSeverity(severity);
     const { latitude: validLat, longitude: validLon } = validateCoordinates(latitude, longitude);
 
+    // Extract uploaded files from req.files or req.file
+    const uploadedFiles: Express.Multer.File[] = [];
+    if (Array.isArray(req.files)) {
+      uploadedFiles.push(...req.files);
+    } else if (req.files && typeof req.files === 'object') {
+      for (const fieldFiles of Object.values(req.files)) {
+        if (Array.isArray(fieldFiles)) {
+          uploadedFiles.push(...fieldFiles);
+        }
+      }
+    }
+    if (req.file) {
+      uploadedFiles.push(req.file);
+    }
+
+    let photoUrl: string | null = null;
+    let photoUrls: string[] = [];
+
+    if (uploadedFiles.length > 0) {
+      photoUrls = uploadedFiles.map((f) => `/uploads/${f.filename}`);
+      photoUrl = photoUrls[0];
+    } else if (req.body.photoUrl || req.body.photoUrls) {
+      if (req.body.photoUrls) {
+        photoUrls = Array.isArray(req.body.photoUrls)
+          ? req.body.photoUrls.map(String)
+          : [String(req.body.photoUrls)];
+        photoUrl = photoUrls[0] || null;
+      } else if (req.body.photoUrl) {
+        photoUrl = String(req.body.photoUrl);
+        photoUrls = [photoUrl];
+      }
+    }
+
     const record = await incidentService.createIncident({
       type: validatedType,
       severity: validatedSeverity,
       description: description.trim(),
       latitude: validLat,
       longitude: validLon,
+      photoUrl,
+      photoUrls,
     });
 
     res.status(201).json({

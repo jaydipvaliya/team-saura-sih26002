@@ -1,5 +1,6 @@
 import type { CandidateRouteProfile, RiskLevel, RiskWaypoint } from '../types/api';
 import { RISK_LEVEL_FILL } from '../config/map-theme';
+import { Icon, type IconName } from './common/Icon';
 
 interface RouteRiskProfileProps {
   selectedRoute: CandidateRouteProfile;
@@ -9,16 +10,19 @@ const CHART_HEIGHT = 68;
 
 const LEVEL_RANK: Record<RiskLevel, number> = { LOW: 0, MEDIUM: 1, HIGH: 2, CRITICAL: 3 };
 
-const FACTOR_ICONS: Record<string, string> = {
-  'Steep Terrain': '⛰️',
-  'Landslide Hotspot': '⚠️',
-  'Active Incident': '🚧',
-  'Rainfall': '🌧️',
-  'Flood Risk': '🌊',
-};
-
-function factorIcon(name: string): string {
-  return FACTOR_ICONS[name] ?? '•';
+function factorIconName(name: string): IconName {
+  switch (name) {
+    case 'Steep Terrain':
+      return 'mountain';
+    case 'Landslide Hotspot':
+      return 'landslide';
+    case 'Active Incident':
+      return 'barrier';
+    case 'Rainfall':
+      return 'cloud-rain';
+    default:
+      return 'alert-triangle';
+  }
 }
 
 function fillFor(level: RiskLevel): string {
@@ -130,7 +134,7 @@ export default function RouteRiskProfile({ selectedRoute }: RouteRiskProfileProp
             return (
               <div
                 key={`${index}-${wp.distanceAlongRouteKm}`}
-                title={`${wp.score.toFixed(1)} / 100 · ${wp.level} · ${wp.primaryFactor} · ${wp.distanceAlongRouteKm.toFixed(1)} km`}
+                title={`Score: ${wp.score.toFixed(1)}/100 (${wp.level}) — ${wp.primaryFactor} at km ${wp.distanceAlongRouteKm.toFixed(1)}`}
                 style={{
                   flex: 1,
                   minWidth: 0,
@@ -153,15 +157,15 @@ export default function RouteRiskProfile({ selectedRoute }: RouteRiskProfileProp
           display: 'flex',
           justifyContent: 'space-between',
           marginTop: 5,
-          fontSize: 9,
-          color: '#64748B',
+          fontSize: 10,
+          color: 'var(--text-muted)',
           fontFamily: 'var(--font-mono)',
         }}
       >
-        <span>0 km · origin</span>
-        <span>{totalKm.toFixed(0)} km · destination</span>
+        <span>Origin: 0 km</span>
+        <span>Destination: {totalKm.toFixed(0)} km</span>
       </div>
-      <div style={{ fontSize: 10, color: '#94A3B8', marginTop: 6, lineHeight: 1.4 }}>
+      <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 6, lineHeight: 1.4 }}>
         Peak exposure <strong style={{ color: fillFor(peak.level) }}>{peak.score.toFixed(1)}/100</strong> ({peak.level}) at{' '}
         {peak.distanceAlongRouteKm.toFixed(1)} km — {peak.primaryFactor.toLowerCase()}.
       </div>
@@ -170,11 +174,9 @@ export default function RouteRiskProfile({ selectedRoute }: RouteRiskProfileProp
       <div
         style={{
           fontSize: 11,
-          fontWeight: 700,
-          color: '#94A3B8',
-          textTransform: 'uppercase',
+          fontWeight: 600,
+          color: 'var(--text-secondary)',
           margin: '14px 0 8px',
-          letterSpacing: 0.5,
         }}
       >
         Dominant Risk Factors (Sampled)
@@ -187,12 +189,12 @@ export default function RouteRiskProfile({ selectedRoute }: RouteRiskProfileProp
           return (
             <div key={item.factor} style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11 }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#F8FAFC', fontWeight: 600 }}>
-                  <span>{factorIcon(item.factor)}</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-primary)', fontWeight: 500 }}>
+                  <Icon name={factorIconName(item.factor)} size={13} style={{ color }} />
                   <span>{item.factor}</span>
                 </span>
-                <span style={{ color: '#94A3B8', fontFamily: 'var(--font-mono)', fontSize: 10 }}>
-                  {item.count} pt{item.count === 1 ? '' : 's'} · up to {item.maxLevel}
+                <span style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: 10 }}>
+                  {item.count} pt{item.count === 1 ? '' : 's'} (max {item.maxLevel})
                 </span>
               </div>
               <div

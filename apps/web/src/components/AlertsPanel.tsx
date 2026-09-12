@@ -1,4 +1,5 @@
 import type { AlertRecord } from '../types/api';
+import { Icon } from './common/Icon';
 
 interface AlertsPanelProps {
   alerts: AlertRecord[];
@@ -28,15 +29,15 @@ export default function AlertsPanel({
         <div
           style={{
             padding: '10px 12px',
-            backgroundColor: 'rgba(239, 68, 68, 0.15)',
-            border: '1px solid rgba(239, 68, 68, 0.4)',
+            backgroundColor: 'rgba(217, 56, 58, 0.12)',
+            border: '1px solid rgba(217, 56, 58, 0.35)',
             borderRadius: 6,
             marginBottom: 10,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#EF4444', fontWeight: 800, fontSize: 12, marginBottom: 4 }}>
-            <span>⚠️</span>
-            <span>LIVE ROUTE ALERT</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--color-status-danger)', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>
+            <Icon name="alert-triangle" size={14} color="var(--color-status-danger)" />
+            <span>Live Route Alert</span>
           </div>
           <div style={{ fontSize: 11, color: '#FCA5A5', lineHeight: 1.4, marginBottom: 8 }}>
             Hazard or obstruction detected on current route ({routeAlerts[0]?.title || 'Active Corridor Warning'}).
@@ -48,12 +49,12 @@ export default function AlertsPanel({
                 style={{
                   flex: 1,
                   padding: '5px 8px',
-                  backgroundColor: 'rgba(239, 68, 68, 0.25)',
-                  border: '1px solid rgba(239, 68, 68, 0.5)',
+                  backgroundColor: 'rgba(217, 56, 58, 0.2)',
+                  border: '1px solid rgba(217, 56, 58, 0.4)',
                   borderRadius: 4,
                   color: '#FFFFFF',
                   fontSize: 10,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
@@ -66,12 +67,12 @@ export default function AlertsPanel({
                 style={{
                   flex: 1,
                   padding: '5px 8px',
-                  backgroundColor: '#059669',
+                  backgroundColor: 'var(--color-status-safe)',
                   border: 'none',
                   borderRadius: 4,
                   color: '#FFFFFF',
                   fontSize: 10,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
@@ -84,20 +85,20 @@ export default function AlertsPanel({
         <div
           style={{
             padding: '8px 12px',
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-            border: '1px solid rgba(16, 185, 129, 0.25)',
+            backgroundColor: 'rgba(46, 139, 87, 0.1)',
+            border: '1px solid rgba(46, 139, 87, 0.25)',
             borderRadius: 6,
             marginBottom: 10,
           }}
         >
-          <div style={{ fontSize: 10, fontWeight: 800, color: '#34D399', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            ROUTE STATUS
+          <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--color-status-safe)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            Route Status
           </div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#34D399', marginTop: 2, display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span>✓</span>
+          <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-status-safe)', marginTop: 2, display: 'flex', alignItems: 'center', gap: 5 }}>
+            <Icon name="check" size={13} color="var(--color-status-safe)" />
             <span>No active route alerts</span>
           </div>
-          <div style={{ fontSize: 10, color: '#94A3B8', marginTop: 2 }}>
+          <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 2 }}>
             Route currently operating normally without active closures or critical disruptions.
           </div>
         </div>
@@ -106,7 +107,7 @@ export default function AlertsPanel({
       {/* Regional Alerts Section */}
       <div className="intel-card-header" style={{ marginBottom: 6 }}>
         <span className="intel-card-title">
-          <span>🔔</span>
+          <Icon name="bell" size={14} color="var(--color-accent-amber)" />
           <span>{driverMode ? 'Highway Road Alerts' : 'Regional Highway Advisories'}</span>
         </span>
         <span
@@ -115,17 +116,18 @@ export default function AlertsPanel({
             fontWeight: 700,
             padding: '2px 6px',
             borderRadius: 4,
-            backgroundColor: alerts.length > 0 ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)',
-            color: alerts.length > 0 ? '#FCD34D' : '#34D399',
+            backgroundColor: alerts.length > 0 ? 'rgba(217, 119, 6, 0.15)' : 'rgba(46, 139, 87, 0.15)',
+            color: alerts.length > 0 ? 'var(--color-status-caution)' : 'var(--color-status-safe)',
           }}
         >
-          {alerts.length} REGION ADVISORIES
+          {alerts.length} Region Advisories
         </span>
       </div>
 
       {isUnavailable && (
-        <div style={{ padding: '6px 8px', fontSize: 10, color: '#FCD34D' }}>
-          ⚠️ Regional alerts service is temporarily offline.
+        <div style={{ padding: '6px 8px', fontSize: 10, color: 'var(--color-status-caution)', display: 'flex', alignItems: 'center', gap: 5 }}>
+          <Icon name="alert-triangle" size={12} color="var(--color-status-caution)" />
+          <span>Regional alerts service is temporarily offline.</span>
         </div>
       )}
 
@@ -134,8 +136,8 @@ export default function AlertsPanel({
           {alerts.map((alert) => {
             const isCritical = alert.severity === 'CRITICAL';
             const isWarning = alert.severity === 'WARNING';
-            const accentColor = isCritical ? '#EF4444' : isWarning ? '#F59E0B' : '#3B82F6';
-            const bgColor = isCritical ? 'rgba(239, 68, 68, 0.12)' : isWarning ? 'rgba(245, 158, 11, 0.12)' : 'rgba(59, 130, 246, 0.12)';
+            const accentColor = isCritical ? 'var(--color-status-danger)' : isWarning ? 'var(--color-status-caution)' : 'var(--color-accent-amber)';
+            const bgColor = isCritical ? 'rgba(217, 56, 58, 0.1)' : isWarning ? 'rgba(217, 119, 6, 0.1)' : 'rgba(229, 152, 58, 0.08)';
 
             return (
               <div
@@ -143,7 +145,7 @@ export default function AlertsPanel({
                 style={{
                   padding: '8px 10px',
                   backgroundColor: bgColor,
-                  border: `1px solid ${accentColor}44`,
+                  border: `1px solid ${accentColor}33`,
                   borderLeft: `3px solid ${accentColor}`,
                   borderRadius: 6,
                   display: 'flex',
@@ -152,17 +154,17 @@ export default function AlertsPanel({
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 9, fontWeight: 800, color: accentColor, textTransform: 'uppercase' }}>
-                    {alert.severity} · {alert.category.replace(/_/g, ' ')}
+                  <span style={{ fontSize: 9, fontWeight: 700, color: accentColor, textTransform: 'uppercase', letterSpacing: 0.3 }}>
+                    {alert.severity} — {alert.category.replace(/_/g, ' ')}
                   </span>
                   {alert.routeCandidateId && (
-                    <span style={{ fontSize: 9, fontWeight: 700, color: '#93C5FD', backgroundColor: 'rgba(37, 99, 235, 0.3)', padding: '1px 4px', borderRadius: 3 }}>
-                      ON ROUTE
+                    <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--color-accent-amber)', backgroundColor: 'rgba(229, 152, 58, 0.15)', padding: '1px 5px', borderRadius: 3 }}>
+                      On Route
                     </span>
                   )}
                 </div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: '#F8FAFC' }}>{alert.title}</div>
-                <div style={{ fontSize: 10, color: '#CBD5E1', lineHeight: 1.3 }}>{alert.message}</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-primary)' }}>{alert.title}</div>
+                <div style={{ fontSize: 10, color: 'var(--color-text-secondary)', lineHeight: 1.3 }}>{alert.message}</div>
               </div>
             );
           })}
