@@ -1,5 +1,6 @@
 import type { RoutingPreference } from '../types/api';
 import { PRESET_CORRIDORS } from '../config/map-theme';
+import { Icon } from './common/Icon';
 
 interface RoutePlannerProps {
   originInput: string;
@@ -36,11 +37,11 @@ export default function RoutePlanner({
     <div className="intel-card">
       <div className="intel-card-header">
         <span className="intel-card-title">
-          <span>🧭</span>
+          <Icon name="compass" size={15} style={{ color: 'var(--accent-action)' }} />
           <span>Route Planner</span>
         </span>
         {activePreset && (
-          <span style={{ fontSize: 10, color: '#38BDF8', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
+          <span style={{ fontSize: 11, color: 'var(--accent-action)', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
             {activePreset.highway}
           </span>
         )}
@@ -66,8 +67,8 @@ export default function RoutePlanner({
       {/* Inputs */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 12 }}>
         <div>
-          <label style={{ fontSize: 11, fontWeight: 700, color: '#94A3B8', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
-            <span style={{ color: '#10B981' }}>●</span> FROM (Origin Lat, Lon):
+          <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
+            <Icon name="pin-start" size={13} style={{ color: 'var(--status-safe)' }} /> Origin (Latitude, Longitude):
           </label>
           <input
             type="text"
@@ -81,8 +82,8 @@ export default function RoutePlanner({
         </div>
 
         <div>
-          <label style={{ fontSize: 11, fontWeight: 700, color: '#94A3B8', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
-            <span style={{ color: '#EF4444' }}>●</span> TO (Destination Lat, Lon):
+          <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
+            <Icon name="pin-end" size={13} style={{ color: 'var(--status-critical)' }} /> Destination (Latitude, Longitude):
           </label>
           <input
             type="text"
@@ -98,8 +99,8 @@ export default function RoutePlanner({
 
       {/* Routing Preference Selector */}
       <div style={{ marginBottom: 14 }}>
-        <label style={{ fontSize: 11, fontWeight: 700, color: '#94A3B8', display: 'block', marginBottom: 6 }}>
-          ROUTING OBJECTIVE:
+        <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>
+          Routing Objective
         </label>
         <div style={{ display: 'flex', gap: 6 }}>
           {(['FASTEST', 'BALANCED', 'SAFEST'] as RoutingPreference[]).map((mode) => {
@@ -111,18 +112,26 @@ export default function RoutePlanner({
                 disabled={isRouting}
                 style={{
                   flex: 1,
-                  padding: '7px 4px',
+                  padding: '7px 6px',
                   fontSize: 11,
-                  fontWeight: 700,
+                  fontWeight: isSelected ? 700 : 500,
                   borderRadius: 6,
                   cursor: isRouting ? 'not-allowed' : 'pointer',
-                  border: `1px solid ${isSelected ? '#3B82F6' : '#334155'}`,
-                  backgroundColor: isSelected ? 'rgba(37, 99, 235, 0.25)' : 'rgba(30, 41, 59, 0.6)',
-                  color: isSelected ? '#93C5FD' : '#94A3B8',
+                  border: `1px solid ${isSelected ? 'var(--accent-action)' : 'var(--border-subtle)'}`,
+                  backgroundColor: isSelected ? 'var(--accent-action-bg)' : 'var(--bg-card-inset)',
+                  color: isSelected ? 'var(--accent-action)' : 'var(--text-secondary)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 5,
                   transition: 'all 0.15s',
                 }}
               >
-                {mode === 'FASTEST' ? '⚡ FASTEST' : mode === 'BALANCED' ? '⚖️ BALANCED' : '🛡️ SAFEST'}
+                <Icon
+                  name={mode === 'FASTEST' ? 'clock' : mode === 'BALANCED' ? 'scale' : 'shield'}
+                  size={12}
+                />
+                <span>{mode === 'FASTEST' ? 'Fastest' : mode === 'BALANCED' ? 'Balanced' : 'Safest'}</span>
               </button>
             );
           })}

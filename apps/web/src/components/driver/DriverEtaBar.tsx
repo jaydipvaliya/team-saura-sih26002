@@ -1,6 +1,7 @@
 import type { CandidateRouteProfile } from '../../types/api';
 import type { LiveTripProgress } from '../../utils/eta';
 import { formatDuration } from '../../utils/eta';
+import { Icon } from '../common/Icon';
 
 interface DriverEtaBarProps {
   selectedRoute: CandidateRouteProfile;
@@ -28,7 +29,7 @@ export default function DriverEtaBar({ selectedRoute, liveProgress }: DriverEtaB
     <div className="driver-eta-container">
       {weatherDelayMinutes > 0 && (
         <div className="driver-eta-delay-badge">
-          <span>🌧️</span>
+          <Icon name="cloud-rain" size={14} color="var(--color-status-caution)" />
           <span>Includes +{weatherDelayMinutes} min weather delay for heavy rain zones</span>
         </div>
       )}

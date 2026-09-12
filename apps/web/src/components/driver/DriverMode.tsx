@@ -17,6 +17,7 @@ import type { DriverTab } from './DriverBottomNav';
 import DriverTripStart from './DriverTripStart';
 import AlertsPanel from '../AlertsPanel';
 import ReroutePanel from '../ReroutePanel';
+import { Icon } from '../common/Icon';
 
 interface DriverModeProps {
   optimization: RouteOptimizationResult | null;
@@ -156,18 +157,20 @@ export default function DriverMode({
                         onNewTrip();
                         setActiveTab('navigate');
                       }}
-                      style={{ minHeight: 46, background: '#2563EB' }}
+                      style={{ minHeight: 46, background: 'var(--color-accent-amber)', color: 'var(--color-bg-deep)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
                     >
-                      🎯 Change Destination / New Trip
+                      <Icon name="target" size={16} color="var(--color-bg-deep)" />
+                      <span>Change Destination / New Trip</span>
                     </button>
                   )}
                   <button
                     type="button"
                     className="driver-empty-btn"
                     onClick={onExit}
-                    style={{ minHeight: 46, background: 'rgba(30, 41, 59, 0.9)', border: '1px solid #475569' }}
+                    style={{ minHeight: 46, background: 'var(--color-bg-base)', border: '1px solid var(--color-border-subtle)', color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
                   >
-                    🖥️ Switch to Operations Command Center
+                    <Icon name="terminal" size={16} color="var(--color-text-muted)" />
+                    <span>Switch to Operations Command Center</span>
                   </button>
                 </div>
               </div>

@@ -1,4 +1,6 @@
 import type { AlertRecord, CandidateRouteProfile } from '../../types/api';
+import type { ReactNode } from 'react';
+import { Icon } from '../common/Icon';
 
 interface DriverSafetyBannerProps {
   selectedRoute: CandidateRouteProfile;
@@ -21,29 +23,29 @@ export default function DriverSafetyBanner({
   const accessibilityStatus = selectedRoute.accessibility?.status;
 
   let tone: 'hazard' | 'warn' | 'safe' = 'safe';
-  let icon = '✓';
-  let title = 'SAFE TO PROCEED';
+  let icon: ReactNode = <Icon name="check" size={18} color="var(--color-status-safe)" />;
+  let title = 'Safe to Proceed';
   let message = 'No active road warnings ahead';
 
   if (activeAlert) {
     tone = activeAlert.severity === 'CRITICAL' ? 'hazard' : 'warn';
-    icon = '⚠';
-    title = activeAlert.title.toUpperCase();
+    icon = <Icon name="alert-triangle" size={18} color={tone === 'hazard' ? 'var(--color-status-danger)' : 'var(--color-status-caution)'} />;
+    title = activeAlert.title;
     message = activeAlert.message;
   } else if (accessibilityStatus === 'CLOSED') {
     tone = 'hazard';
-    icon = '⛔';
-    title = 'ROAD CLOSED AHEAD';
+    icon = <Icon name="barrier" size={18} color="var(--color-status-danger)" />;
+    title = 'Road Closed Ahead';
     message = 'A road segment on this route is currently closed to traffic.';
   } else if (accessibilityStatus === 'RESTRICTED') {
     tone = 'warn';
-    icon = '⚠';
-    title = 'RESTRICTED ROAD';
+    icon = <Icon name="alert-triangle" size={18} color="var(--color-status-caution)" />;
+    title = 'Restricted Road';
     message = 'Drive with caution — single-lane or slow traffic on this corridor.';
   } else if (risk.overallLevel === 'CRITICAL' || risk.overallLevel === 'HIGH') {
     tone = 'warn';
-    icon = '⚠';
-    title = risk.overallLevel === 'CRITICAL' ? 'HIGH RISK ROAD AHEAD' : 'ROAD AHEAD LOOKS RISKY';
+    icon = <Icon name="alert-triangle" size={18} color="var(--color-status-caution)" />;
+    title = risk.overallLevel === 'CRITICAL' ? 'High Risk Road Ahead' : 'Road Ahead Requires Caution';
     message = `Main concern: ${risk.dominantTrigger}`;
   }
 

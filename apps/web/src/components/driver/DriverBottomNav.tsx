@@ -1,3 +1,6 @@
+import type { IconName } from '../common/Icon';
+import { Icon } from '../common/Icon';
+
 export type DriverTab = 'navigate' | 'route' | 'safety' | 'alerts' | 'more';
 
 interface DriverBottomNavProps {
@@ -6,12 +9,12 @@ interface DriverBottomNavProps {
   alertCount: number;
 }
 
-const TABS: { key: DriverTab; label: string; icon: string }[] = [
-  { key: 'navigate', label: 'Navigate', icon: '🧭' },
-  { key: 'route', label: 'Route', icon: '🛣️' },
-  { key: 'safety', label: 'Safety', icon: '🛡️' },
-  { key: 'alerts', label: 'Alerts', icon: '🔔' },
-  { key: 'more', label: 'More', icon: '⋯' },
+const TABS: { key: DriverTab; label: string; icon: IconName }[] = [
+  { key: 'navigate', label: 'Navigate', icon: 'compass' },
+  { key: 'route', label: 'Route', icon: 'route' },
+  { key: 'safety', label: 'Safety', icon: 'shield' },
+  { key: 'alerts', label: 'Alerts', icon: 'bell' },
+  { key: 'more', label: 'More', icon: 'terminal' },
 ];
 
 export default function DriverBottomNav({ activeTab, onTabChange, alertCount }: DriverBottomNavProps) {
@@ -24,7 +27,9 @@ export default function DriverBottomNav({ activeTab, onTabChange, alertCount }: 
           className={`driver-nav-btn ${activeTab === tab.key ? 'active' : ''}`}
           aria-current={activeTab === tab.key ? 'page' : undefined}
         >
-          <span className="driver-nav-icon">{tab.icon}</span>
+          <span className="driver-nav-icon">
+            <Icon name={tab.icon} size={18} />
+          </span>
           <span className="driver-nav-label">{tab.label}</span>
           {tab.key === 'alerts' && alertCount > 0 && (
             <span className="driver-nav-badge">{alertCount}</span>

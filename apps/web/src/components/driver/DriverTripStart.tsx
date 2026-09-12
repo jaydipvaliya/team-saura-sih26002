@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PRESET_CORRIDORS } from '../../config/map-theme';
+import { Icon } from '../common/Icon';
 
 interface DriverTripStartProps {
   onCalculate: (origin: string, dest: string, destLabel?: string) => Promise<void> | void;
@@ -84,7 +85,7 @@ export default function DriverTripStart({
     <div className="driver-trip-start">
       {/* Title & Status */}
       <div className="driver-trip-hero">
-        <div className="driver-trip-badge">DRIVER DISPATCH</div>
+        <div className="driver-trip-badge">Driver Dispatch</div>
         <h1 className="driver-trip-title">Start a Trip</h1>
         <p className="driver-trip-lead">
           Select your destination below to receive safe, turn-by-turn guidance and live road hazard alerts.
@@ -95,8 +96,12 @@ export default function DriverTripStart({
       <div className="driver-trip-section">
         <div className="driver-section-header">
           <span className="driver-section-number">1</span>
-          <span className="driver-section-title">STARTING LOCATION</span>
-          {isUsingGps && <span className="driver-badge-gps">✓ GPS Active</span>}
+          <span className="driver-section-title">Starting Location</span>
+          {isUsingGps && (
+            <span className="driver-badge-gps" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <Icon name="check" size={11} color="var(--color-status-safe)" /> GPS Active
+            </span>
+          )}
           {selectedHubId && <span className="driver-badge-hub">Hub Selected</span>}
         </div>
 
@@ -109,7 +114,11 @@ export default function DriverTripStart({
           aria-label="Use My Current Location"
         >
           <span className="driver-gps-icon" aria-hidden="true">
-            {geoState === 'locating' ? '⏳' : '📍'}
+            {geoState === 'locating' ? (
+              <Icon name="clock" size={20} color="var(--color-accent-amber)" />
+            ) : (
+              <Icon name="pin-start" size={20} color="var(--color-accent-amber)" />
+            )}
           </span>
           <div className="driver-gps-content">
             <span className="driver-gps-title">
@@ -127,7 +136,7 @@ export default function DriverTripStart({
           </div>
           {isUsingGps && (
             <span className="driver-gps-check" aria-hidden="true">
-              ✓
+              <Icon name="check" size={16} color="var(--color-status-safe)" />
             </span>
           )}
         </button>
@@ -136,7 +145,7 @@ export default function DriverTripStart({
         {geoMessage && (
           <div className="driver-geo-feedback" role="alert">
             <span className="driver-geo-icon" aria-hidden="true">
-              ⚠️
+              <Icon name="alert-triangle" size={14} color="var(--color-status-caution)" />
             </span>
             <span>{geoMessage}</span>
           </div>
@@ -169,7 +178,7 @@ export default function DriverTripStart({
       <div className="driver-trip-section">
         <div className="driver-section-header">
           <span className="driver-section-number">2</span>
-          <span className="driver-section-title">WHERE ARE YOU HEADING?</span>
+          <span className="driver-section-title">Where are you heading?</span>
         </div>
 
         {/* In-flight routing spinner */}
@@ -187,7 +196,7 @@ export default function DriverTripStart({
         {routingError && (
           <div className="driver-routing-error" role="alert">
             <span className="driver-error-icon" aria-hidden="true">
-              ⚠️
+              <Icon name="alert-triangle" size={16} color="var(--color-status-danger)" />
             </span>
             <div className="driver-error-body">
               <strong>Could not calculate route</strong>
@@ -208,13 +217,12 @@ export default function DriverTripStart({
               aria-label={`Route to ${corridor.toLabel} via ${corridor.highway}`}
             >
               <div className="driver-dest-icon" aria-hidden="true">
-                🎯
+                <Icon name="target" size={18} color="var(--color-accent-amber)" />
               </div>
               <div className="driver-dest-info">
                 <div className="driver-dest-title">{corridor.toLabel}</div>
                 <div className="driver-dest-meta">
                   <span className="driver-dest-highway">{corridor.highway}</span>
-                  <span className="driver-dest-dot">·</span>
                   <span className="driver-dest-from">
                     From: {originCoords ? originLabel : corridor.fromLabel}
                   </span>

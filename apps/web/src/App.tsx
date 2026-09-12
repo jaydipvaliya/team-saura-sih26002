@@ -15,6 +15,7 @@ import LoadingIndicator from './components/LoadingIndicator';
 import ErrorMessage from './components/ErrorMessage';
 import DriverMode from './components/driver/DriverMode';
 import RoleSelect from './components/RoleSelect';
+import { Icon } from './components/common/Icon';
 import { PRESET_CORRIDORS } from './config/map-theme';
 import { computeLiveTripProgress, type LiveTripProgress } from './utils/eta';
 import type {
@@ -516,12 +517,12 @@ export default function App() {
               <div className="intel-card">
                 <div className="intel-card-header">
                   <span className="intel-card-title">
-                    <span>🛡️</span>
+                    <Icon name="shield" size={15} color="var(--color-accent-amber)" />
                     <span>AI Risk Engine</span>
                   </span>
-                  <span style={{ fontSize: 10, color: '#38BDF8' }}>STANDBY</span>
+                  <span style={{ fontSize: 10, color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>STANDBY</span>
                 </div>
-                <div style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.5 }}>
+                <div style={{ fontSize: 12, color: 'var(--color-text-muted)', lineHeight: 1.5 }}>
                   Select an origin and destination in the Route Planner to compute multi-factor hazard risk scores, terrain slopes, and landslide ML predictions.
                 </div>
               </div>
@@ -561,7 +562,7 @@ export default function App() {
           onClick={() => setActiveMobileTab('planner')}
           className={`mobile-nav-btn ${activeMobileTab === 'planner' ? 'active' : ''}`}
         >
-          <span>🧭</span>
+          <Icon name="compass" size={16} />
           <span>Planner</span>
         </button>
 
@@ -569,7 +570,7 @@ export default function App() {
           onClick={() => setActiveMobileTab('map')}
           className={`mobile-nav-btn ${activeMobileTab === 'map' ? 'active' : ''}`}
         >
-          <span>🗺️</span>
+          <Icon name="map" size={16} />
           <span>Map</span>
         </button>
 
@@ -577,7 +578,7 @@ export default function App() {
           onClick={() => setActiveMobileTab('risk')}
           className={`mobile-nav-btn ${activeMobileTab === 'risk' ? 'active' : ''}`}
         >
-          <span>🛡️</span>
+          <Icon name="shield" size={16} />
           <span>Risk &amp; Intel</span>
         </button>
 
@@ -585,7 +586,7 @@ export default function App() {
           onClick={() => setActiveMobileTab('corridors')}
           className={`mobile-nav-btn ${activeMobileTab === 'corridors' ? 'active' : ''}`}
         >
-          <span>🚧</span>
+          <Icon name="barrier" size={16} />
           <span>Corridors</span>
         </button>
       </nav>

@@ -1,3 +1,5 @@
+import { Icon } from './common/Icon';
+
 interface RoleSelectProps {
   onSelectMode: (mode: 'driver' | 'operations') => void;
 }
@@ -12,7 +14,7 @@ export default function RoleSelect({ onSelectMode }: RoleSelectProps) {
               SR
             </div>
             <div>
-              <div className="brand-title">SAURAROUTE</div>
+              <div className="brand-title">SauraRoute</div>
               <div className="brand-subtitle">AI Logistics &amp; Accessibility Intelligence</div>
             </div>
           </div>
@@ -33,7 +35,7 @@ export default function RoleSelect({ onSelectMode }: RoleSelectProps) {
             aria-label="Enter Driver Mode"
           >
             <div className="role-option-icon" aria-hidden="true">
-              🚚
+              <Icon name="truck" size={26} color="var(--color-accent-amber)" />
             </div>
             <div className="role-option-content">
               <div className="role-option-headline">
@@ -58,7 +60,7 @@ export default function RoleSelect({ onSelectMode }: RoleSelectProps) {
             aria-label="Open Operations Command Center"
           >
             <div className="role-option-icon" aria-hidden="true">
-              🖥️
+              <Icon name="terminal" size={26} color="var(--color-accent-amber)" />
             </div>
             <div className="role-option-content">
               <div className="role-option-headline">

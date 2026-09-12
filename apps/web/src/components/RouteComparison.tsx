@@ -1,5 +1,6 @@
 import type { RouteOptimizationResult, CandidateRouteProfile } from '../types/api';
 import { RISK_LEVEL_THEME } from '../config/map-theme';
+import { Icon } from './common/Icon';
 
 interface RouteComparisonProps {
   optimization: RouteOptimizationResult;
@@ -29,7 +30,7 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
     <div className="intel-card">
       <div className="intel-card-header">
         <span className="intel-card-title">
-          <span>⚖️</span>
+          <Icon name="scale" size={15} color="var(--color-accent-amber)" />
           <span>Route Comparison</span>
         </span>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
@@ -39,27 +40,27 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
               fontWeight: 700,
               padding: '2px 8px',
               borderRadius: 4,
-              backgroundColor: 'rgba(56, 189, 248, 0.15)',
-              color: '#38BDF8',
-              border: '1px solid rgba(56, 189, 248, 0.35)',
+              backgroundColor: 'rgba(229, 152, 58, 0.15)',
+              color: 'var(--color-accent-amber)',
+              border: '1px solid rgba(229, 152, 58, 0.35)',
               letterSpacing: 0.3,
             }}
           >
-            OBJECTIVE: {preference}
+            Objective: {preference}
           </span>
           {optMeta.hazardReductionPercent > 0 && (
             <span
               style={{
                 fontSize: 10,
-                fontWeight: 800,
+                fontWeight: 700,
                 padding: '2px 8px',
                 borderRadius: 4,
-                backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                color: '#34D399',
-                border: '1px solid rgba(16, 185, 129, 0.4)',
+                backgroundColor: 'rgba(46, 139, 87, 0.18)',
+                color: 'var(--color-status-safe)',
+                border: '1px solid rgba(46, 139, 87, 0.4)',
               }}
             >
-              -{optMeta.hazardReductionPercent}% HAZARD
+              -{optMeta.hazardReductionPercent}% Hazard
             </span>
           )}
         </div>
@@ -88,19 +89,18 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
                 <div
                   key={candidate.candidateId}
                   style={{
-                    backgroundColor: isSelected ? 'rgba(37, 99, 235, 0.18)' : 'rgba(15, 23, 42, 0.7)',
-                    border: isSelected ? '1.5px solid #38BDF8' : '1px solid #334155',
+                    backgroundColor: isSelected ? 'rgba(229, 152, 58, 0.1)' : 'var(--color-bg-base)',
+                    border: isSelected ? '1.5px solid var(--color-accent-amber)' : '1px solid var(--color-border-subtle)',
                     borderRadius: 6,
                     padding: '8px',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 5,
-                    boxShadow: isSelected ? '0 0 10px rgba(56, 189, 248, 0.25)' : 'none',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 4 }}>
                     <span
-                      style={{ fontSize: 10, fontWeight: 700, color: isSelected ? '#38BDF8' : '#CBD5E1', lineHeight: 1.2 }}
+                      style={{ fontSize: 10, fontWeight: 700, color: isSelected ? 'var(--color-accent-amber)' : 'var(--color-text-secondary)', lineHeight: 1.2 }}
                       title={candidate.name}
                     >
                       {candidate.name}
@@ -109,9 +109,9 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
                       <span
                         style={{
                           fontSize: 8,
-                          fontWeight: 800,
-                          backgroundColor: '#38BDF8',
-                          color: '#0F172A',
+                          fontWeight: 700,
+                          backgroundColor: 'var(--color-accent-amber)',
+                          color: 'var(--color-bg-deep)',
                           padding: '1px 4px',
                           borderRadius: 3,
                           textTransform: 'uppercase',
@@ -125,19 +125,19 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 3, fontSize: 10 }}>
                     <div>
-                      <span style={{ color: '#64748B' }}>Dist: </span>
-                      <strong style={{ color: '#F8FAFC', fontFamily: 'var(--font-mono)' }}>
+                      <span style={{ color: 'var(--color-text-muted)' }}>Dist: </span>
+                      <strong style={{ color: 'var(--color-text-primary)', fontFamily: 'var(--font-mono)' }}>
                         {(candidate.distanceMeters / 1000).toFixed(1)} km
                       </strong>
                     </div>
                     <div>
-                      <span style={{ color: '#64748B' }}>Time: </span>
-                      <strong style={{ color: '#F8FAFC', fontFamily: 'var(--font-mono)' }}>
+                      <span style={{ color: 'var(--color-text-muted)' }}>Time: </span>
+                      <strong style={{ color: 'var(--color-text-primary)', fontFamily: 'var(--font-mono)' }}>
                         {formatDuration(candidate.durationSeconds)}
                       </strong>
                     </div>
                     <div>
-                      <span style={{ color: '#64748B' }}>Risk: </span>
+                      <span style={{ color: 'var(--color-text-muted)' }}>Risk: </span>
                       <span
                         style={{
                           fontSize: 9,
@@ -165,40 +165,40 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
                 style={{
                   width: '100%',
                   overflowX: 'auto',
-                  backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                  backgroundColor: 'var(--color-bg-base)',
                   borderRadius: 6,
-                  border: '1px solid #334155',
+                  border: '1px solid var(--color-border-subtle)',
                 }}
               >
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
                   <thead>
-                    <tr style={{ borderBottom: '1px solid #334155', color: '#94A3B8' }}>
-                      <th style={{ textAlign: 'left', padding: '6px 8px', fontWeight: 600 }}>METRIC</th>
-                      <th style={{ textAlign: 'right', padding: '6px 8px', fontWeight: 600, color: '#94A3B8' }}>BASELINE</th>
-                      <th style={{ textAlign: 'right', padding: '6px 8px', fontWeight: 700, color: '#38BDF8' }}>SELECTED ROUTE</th>
+                    <tr style={{ borderBottom: '1px solid var(--color-border-subtle)', color: 'var(--color-text-muted)' }}>
+                      <th style={{ textAlign: 'left', padding: '6px 8px', fontWeight: 600 }}>Metric</th>
+                      <th style={{ textAlign: 'right', padding: '6px 8px', fontWeight: 600, color: 'var(--color-text-muted)' }}>Baseline</th>
+                      <th style={{ textAlign: 'right', padding: '6px 8px', fontWeight: 700, color: 'var(--color-accent-amber)' }}>Selected Route</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr style={{ borderBottom: '1px solid rgba(51, 65, 85, 0.5)' }}>
-                      <td style={{ padding: '6px 8px', color: '#CBD5E1', fontWeight: 500 }}>Distance</td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right', color: '#94A3B8', fontFamily: 'var(--font-mono)' }}>
+                    <tr style={{ borderBottom: '1px solid var(--color-border-subtle)' }}>
+                      <td style={{ padding: '6px 8px', color: 'var(--color-text-secondary)', fontWeight: 500 }}>Distance</td>
+                      <td style={{ padding: '6px 8px', textAlign: 'right', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
                         {(baselineRoute.distanceMeters / 1000).toFixed(1)} km
                       </td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right', color: '#F8FAFC', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                      <td style={{ padding: '6px 8px', textAlign: 'right', color: 'var(--color-text-primary)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
                         {(selectedRoute.distanceMeters / 1000).toFixed(1)} km
                       </td>
                     </tr>
-                    <tr style={{ borderBottom: '1px solid rgba(51, 65, 85, 0.5)' }}>
-                      <td style={{ padding: '6px 8px', color: '#CBD5E1', fontWeight: 500 }}>Duration (ETA)</td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right', color: '#94A3B8', fontFamily: 'var(--font-mono)' }}>
+                    <tr style={{ borderBottom: '1px solid var(--color-border-subtle)' }}>
+                      <td style={{ padding: '6px 8px', color: 'var(--color-text-secondary)', fontWeight: 500 }}>Duration (ETA)</td>
+                      <td style={{ padding: '6px 8px', textAlign: 'right', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
                         {formatDuration(baselineRoute.durationSeconds)}
                       </td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right', color: '#F8FAFC', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                      <td style={{ padding: '6px 8px', textAlign: 'right', color: 'var(--color-text-primary)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
                         {formatDuration(selectedRoute.durationSeconds)}
                       </td>
                     </tr>
-                    <tr style={{ borderBottom: '1px solid rgba(51, 65, 85, 0.5)' }}>
-                      <td style={{ padding: '6px 8px', color: '#CBD5E1', fontWeight: 500 }}>Risk Level</td>
+                    <tr style={{ borderBottom: '1px solid var(--color-border-subtle)' }}>
+                      <td style={{ padding: '6px 8px', color: 'var(--color-text-secondary)', fontWeight: 500 }}>Risk Level</td>
                       <td style={{ padding: '6px 8px', textAlign: 'right' }}>
                         <span
                           style={{
@@ -228,21 +228,21 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
                         </span>
                       </td>
                     </tr>
-                    <tr style={{ borderBottom: '1px solid rgba(51, 65, 85, 0.5)' }}>
-                      <td style={{ padding: '6px 8px', color: '#CBD5E1', fontWeight: 500 }}>Mean Risk Score</td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right', color: '#94A3B8', fontFamily: 'var(--font-mono)' }}>
+                    <tr style={{ borderBottom: '1px solid var(--color-border-subtle)' }}>
+                      <td style={{ padding: '6px 8px', color: 'var(--color-text-secondary)', fontWeight: 500 }}>Mean Risk Score</td>
+                      <td style={{ padding: '6px 8px', textAlign: 'right', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
                         {baselineRoute.risk.meanScore.toFixed(1)}
                       </td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right', color: '#38BDF8', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                      <td style={{ padding: '6px 8px', textAlign: 'right', color: 'var(--color-accent-amber)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
                         {selectedRoute.risk.meanScore.toFixed(1)}
                       </td>
                     </tr>
                     <tr>
-                      <td style={{ padding: '6px 8px', color: '#CBD5E1', fontWeight: 500 }}>Hazard Segments</td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right', color: baselineRoute.risk.hazardousSegmentCount > 0 ? '#F87171' : '#94A3B8' }}>
+                      <td style={{ padding: '6px 8px', color: 'var(--color-text-secondary)', fontWeight: 500 }}>Hazard Segments</td>
+                      <td style={{ padding: '6px 8px', textAlign: 'right', color: baselineRoute.risk.hazardousSegmentCount > 0 ? 'var(--color-status-danger)' : 'var(--color-text-muted)' }}>
                         {baselineRoute.risk.hazardousSegmentCount}
                       </td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right', color: selectedRoute.risk.hazardousSegmentCount > 0 ? '#F87171' : '#34D399', fontWeight: 700 }}>
+                      <td style={{ padding: '6px 8px', textAlign: 'right', color: selectedRoute.risk.hazardousSegmentCount > 0 ? 'var(--color-status-danger)' : 'var(--color-status-safe)', fontWeight: 700 }}>
                         {selectedRoute.risk.hazardousSegmentCount}
                       </td>
                     </tr>
@@ -254,20 +254,21 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
                 style={{
                   marginTop: 8,
                   padding: '6px 8px',
-                  backgroundColor: 'rgba(30, 41, 59, 0.6)',
+                  backgroundColor: 'var(--color-bg-base)',
+                  border: '1px solid var(--color-border-subtle)',
                   borderRadius: 6,
                   fontSize: 10,
-                  color: '#94A3B8',
+                  color: 'var(--color-text-muted)',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}
               >
                 <span>
-                  Detour: <strong style={{ color: '#F8FAFC' }}>+{optMeta.additionalDistanceKm.toFixed(1)} km</strong> (
+                  Detour: <strong style={{ color: 'var(--color-text-primary)' }}>+{optMeta.additionalDistanceKm.toFixed(1)} km</strong> (
                   {optMeta.additionalDurationMinutes > 0 ? `+${optMeta.additionalDurationMinutes.toFixed(0)} min` : 'same time'})
                 </span>
-                <span style={{ color: '#34D399', fontWeight: 700 }}>
+                <span style={{ color: 'var(--color-status-safe)', fontWeight: 700 }}>
                   {optMeta.hazardReductionPercent > 0 ? `Safer by ${optMeta.hazardReductionPercent}%` : 'Optimal trade-off'}
                 </span>
               </div>
@@ -276,12 +277,12 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
             <div
               style={{
                 fontSize: 10,
-                color: '#94A3B8',
+                color: 'var(--color-text-muted)',
                 lineHeight: 1.4,
                 padding: '8px 10px',
-                backgroundColor: 'rgba(15, 23, 42, 0.5)',
+                backgroundColor: 'var(--color-bg-base)',
                 borderRadius: 6,
-                borderLeft: '2px solid #3B82F6',
+                borderLeft: '2px solid var(--color-accent-amber)',
               }}
             >
               Baseline route selected — it already carries the lowest risk of the evaluated candidates, so no detour is
@@ -297,30 +298,30 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
               display: 'flex',
               gap: 8,
               padding: '10px 12px',
-              backgroundColor: 'rgba(37, 99, 235, 0.12)',
-              border: '1.5px solid rgba(56, 189, 248, 0.35)',
+              backgroundColor: 'var(--color-bg-base)',
+              border: '1px solid var(--color-border-subtle)',
               borderRadius: 6,
               marginBottom: 8,
             }}
           >
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 9, color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>Distance</div>
-              <div style={{ fontSize: 14, fontWeight: 800, color: '#F8FAFC', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: 9, color: 'var(--color-text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>Distance</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--color-text-primary)', fontFamily: 'var(--font-mono)' }}>
                 {(selectedRoute.distanceMeters / 1000).toFixed(1)} km
               </div>
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 9, color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>Travel</div>
-              <div style={{ fontSize: 14, fontWeight: 800, color: '#F8FAFC', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: 9, color: 'var(--color-text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>Travel</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--color-text-primary)', fontFamily: 'var(--font-mono)' }}>
                 {formatDuration(selectedRoute.durationSeconds)}
               </div>
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 9, color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>Mean Risk</div>
+              <div style={{ fontSize: 9, color: 'var(--color-text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>Mean Risk</div>
               <div
                 style={{
                   fontSize: 14,
-                  fontWeight: 800,
+                  fontWeight: 700,
                   fontFamily: 'var(--font-mono)',
                   color: (RISK_LEVEL_THEME[selectedRoute.risk.overallLevel] || RISK_LEVEL_THEME.MEDIUM).color,
                 }}
@@ -332,12 +333,12 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
           <div
             style={{
               fontSize: 10,
-              color: '#94A3B8',
+              color: 'var(--color-text-muted)',
               lineHeight: 1.4,
               padding: '8px 10px',
-              backgroundColor: 'rgba(15, 23, 42, 0.5)',
+              backgroundColor: 'var(--color-bg-base)',
               borderRadius: 6,
-              borderLeft: '2px solid #3B82F6',
+              borderLeft: '2px solid var(--color-accent-amber)',
             }}
           >
             Single viable route for this corridor — no alternative candidates to compare. {optMeta.selectionReason}

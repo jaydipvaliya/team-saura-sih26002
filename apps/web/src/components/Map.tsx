@@ -153,8 +153,9 @@ export const MapComponent = forwardRef<MapHandle, MapProps>(function MapComponen
 
       const originEl = document.createElement('div');
       originEl.innerHTML = `
-        <div style="background: #10B981; color: #FFFFFF; font-weight: 800; font-size: 11px; padding: 4px 8px; border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); border: 2px solid #FFFFFF; display: flex; align-items: center; gap: 4px;">
-          <span>📍</span><span>ORIGIN</span>
+        <div style="background: #2E8B57; color: #FFFFFF; font-weight: 700; font-size: 11px; padding: 4px 8px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); border: 1.5px solid #FFFFFF; display: flex; align-items: center; gap: 5px; font-family: var(--font-sans);">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" fill="currentColor"/><circle cx="12" cy="12" r="9"/></svg>
+          <span>ORIGIN</span>
         </div>
       `;
       originMarkerRef.current = new maplibregl.Marker({ element: originEl })
@@ -163,8 +164,9 @@ export const MapComponent = forwardRef<MapHandle, MapProps>(function MapComponen
 
       const destEl = document.createElement('div');
       destEl.innerHTML = `
-        <div style="background: #EF4444; color: #FFFFFF; font-weight: 800; font-size: 11px; padding: 4px 8px; border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); border: 2px solid #FFFFFF; display: flex; align-items: center; gap: 4px;">
-          <span>🏁</span><span>DESTINATION</span>
+        <div style="background: #D9383A; color: #FFFFFF; font-weight: 700; font-size: 11px; padding: 4px 8px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); border: 1.5px solid #FFFFFF; display: flex; align-items: center; gap: 5px; font-family: var(--font-sans);">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" fill="currentColor"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          <span>DESTINATION</span>
         </div>
       `;
       destMarkerRef.current = new maplibregl.Marker({ element: destEl })
@@ -390,8 +392,9 @@ export const MapComponent = forwardRef<MapHandle, MapProps>(function MapComponen
             .setLngLat(coordinates)
             .setHTML(`
               <div style="font-size: 12px; min-width: 220px;">
-                <div style="font-size: 11px; font-weight: 800; color: #A78BFA; margin-bottom: 2px;">
-                  ⛰️ HISTORICAL HAZARD ZONE
+                <div style="font-size: 11px; font-weight: 700; color: #E5983A; margin-bottom: 3px; display: flex; align-items: center; gap: 4px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3l4 8 5-5 5 15H2L8 3z"/></svg>
+                  <span>Historical Hazard Zone</span>
                 </div>
                 <div style="font-size: 13px; font-weight: 700; color: #F8FAFC; margin-bottom: 4px;">
                   ${props.name}
@@ -458,8 +461,9 @@ export const MapComponent = forwardRef<MapHandle, MapProps>(function MapComponen
             .setLngLat(coordinates)
             .setHTML(`
               <div style="font-size: 12px; min-width: 210px;">
-                <div style="font-size: 11px; font-weight: 800; color: ${SEVERITY_THEME[props.severity]?.color || '#EF4444'}; margin-bottom: 2px;">
-                  ⚠️ ${props.severity} ${props.type}
+                <div style="font-size: 11px; font-weight: 700; color: ${SEVERITY_THEME[props.severity]?.color || '#D9383A'}; margin-bottom: 3px; display: flex; align-items: center; gap: 4px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <span>${props.severity} ${props.type}</span>
                 </div>
                 <div style="font-size: 13px; font-weight: 700; color: #F8FAFC; margin-bottom: 4px;">
                   ${props.description}
@@ -506,12 +510,13 @@ export const MapComponent = forwardRef<MapHandle, MapProps>(function MapComponen
             .setLngLat(coordinates)
             .setHTML(`
               <div style="font-size: 12px; min-width: 190px;">
-                <div style="font-size: 13px; font-weight: 800; color: #34D399; margin-bottom: 4px;">
-                  🚛 Vehicle ${props.vehicleCode}
+                <div style="font-size: 13px; font-weight: 700; color: #2E8B57; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                  <span>Vehicle ${props.vehicleCode}</span>
                 </div>
                 <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 4px;">
                   Speed: <strong>${props.speed} km/h</strong> | Heading: <strong>${props.heading}°</strong><br/>
-                  Status: <strong style="color: #34D399;">${props.status}</strong>
+                  Status: <strong style="color: #2E8B57;">${props.status}</strong>
                 </div>
                 <div style="font-size: 10px; color: #94A3B8; border-top: 1px solid #334155; padding-top: 3px;">
                   Telemetry: ${new Date(props.updatedAt).toLocaleTimeString()}
