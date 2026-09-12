@@ -17,6 +17,7 @@ import DriverMode from './components/driver/DriverMode';
 import RoleSelect from './components/RoleSelect';
 import AuthModal from './components/auth/AuthModal';
 import AuthPage from './components/auth/AuthPage';
+import AuthPanel from './components/AuthPanel';
 import { Icon } from './components/common/Icon';
 import { PRESET_CORRIDORS } from './config/map-theme';
 import { computeLiveTripProgress, type LiveTripProgress } from './utils/eta';
@@ -56,6 +57,7 @@ export default function App() {
   const [showRightPanel, setShowRightPanel] = useState<boolean>(true);
   const [showLegend, setShowLegend] = useState<boolean>(true);
   const [showHazardZones, setShowHazardZones] = useState<boolean>(true);
+  const [showAuthPanel, setShowAuthPanel] = useState<boolean>(true);
 
   // Mobile navigation tab
   const [activeMobileTab, setActiveMobileTab] = useState<MobileTab>('map');
@@ -409,6 +411,8 @@ export default function App() {
         setShowRightPanel={setShowRightPanel}
         showLegend={showLegend}
         setShowLegend={setShowLegend}
+        showAuthPanel={showAuthPanel}
+        setShowAuthPanel={setShowAuthPanel}
         viewMode={viewMode || 'operations'}
         onToggleViewMode={handleToggleViewMode}
         onOpenAuth={() => setIsAuthModalOpen(true)}
@@ -533,6 +537,18 @@ export default function App() {
           aria-label="Risk and Corridor Intelligence Panel"
         >
           <div className="dock-panel-body">
+            {/* Access & Role Intelligence Panel */}
+            {showAuthPanel && (
+              <AuthPanel
+                onIncidentReported={() => {
+                  fetch(`${API_BASE_URL}/incidents`)
+                    .then((r) => r.json())
+                    .then((data) => setIncidents(data))
+                    .catch(() => {});
+                }}
+              />
+            )}
+
             {/* AI Route Risk Gauge & Contributors */}
             {optimization ? (
               <RiskPanel

@@ -15,6 +15,8 @@ interface HeaderProps {
   setShowRightPanel: Dispatch<SetStateAction<boolean>>;
   showLegend: boolean;
   setShowLegend: Dispatch<SetStateAction<boolean>>;
+  showAuthPanel?: boolean;
+  setShowAuthPanel?: Dispatch<SetStateAction<boolean>>;
   viewMode: 'operations' | 'driver';
   onToggleViewMode: () => void;
   onOpenAuth?: () => void;
@@ -33,6 +35,8 @@ export default function Header({
   setShowRightPanel,
   showLegend,
   setShowLegend,
+  showAuthPanel,
+  setShowAuthPanel,
   viewMode,
   onToggleViewMode,
   onOpenAuth,
@@ -115,6 +119,33 @@ export default function Header({
             >
               Legend
             </button>
+
+            {setShowAuthPanel && (
+              <button
+                onClick={() => setShowAuthPanel(!showAuthPanel)}
+                className={`btn-preset ${showAuthPanel ? 'active' : ''}`}
+                title={showAuthPanel ? 'Hide Access Control Panel' : 'Show Access Control Panel'}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  borderColor: isAuthenticated ? 'var(--status-safe)' : 'var(--accent-action)',
+                  color: isAuthenticated ? '#4ADE80' : 'var(--accent-action)',
+                  fontWeight: 600,
+                }}
+              >
+                <Icon name="lock" size={13} />
+                <span>
+                  {isAuthenticated
+                    ? user?.role === 'field_officer'
+                      ? 'Field Officer'
+                      : user?.role === 'district_admin'
+                      ? 'District Admin'
+                      : 'MDoNER Admin'
+                    : 'Access Control'}
+                </span>
+              </button>
+            )}
           </>
         )}
 

@@ -2298,4 +2298,49 @@ html, body, #root {
   to { transform: rotate(360deg); }
 }
 
+/* AuthPanel Embedded Styles */
+.auth-panel-card {
+  border-left: 3px solid var(--accent-action);
+}
+
+.auth-profile-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.auth-role-desc-box {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px dashed var(--border-subtle);
+}
+
+.auth-officer-tool-box {
+  background: rgba(52, 211, 153, 0.05);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+
 
