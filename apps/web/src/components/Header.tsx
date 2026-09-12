@@ -15,11 +15,9 @@ interface HeaderProps {
   setShowRightPanel: Dispatch<SetStateAction<boolean>>;
   showLegend: boolean;
   setShowLegend: Dispatch<SetStateAction<boolean>>;
-  showAuthPanel?: boolean;
-  setShowAuthPanel?: Dispatch<SetStateAction<boolean>>;
   viewMode: 'operations' | 'driver';
   onToggleViewMode: () => void;
-  onOpenAuth?: () => void;
+  onNavigateToAuth: () => void;
 }
 
 export default function Header({
@@ -35,13 +33,12 @@ export default function Header({
   setShowRightPanel,
   showLegend,
   setShowLegend,
-  showAuthPanel,
-  setShowAuthPanel,
   viewMode,
   onToggleViewMode,
-  onOpenAuth,
+  onNavigateToAuth,
 }: HeaderProps) {
   const { user, isAuthenticated, logout } = useAuth();
+
   return (
     <header className="command-header">
       {/* Brand / Logo */}
@@ -49,7 +46,7 @@ export default function Header({
         <div className="brand-icon" aria-label="SauraRoute Logo">
           SR
         </div>
-        <div>
+        <div className="brand-text-block">
           <div className="brand-title">SauraRoute</div>
           <div className="brand-subtitle">North Eastern Region Corridor Intelligence</div>
         </div>
@@ -59,44 +56,46 @@ export default function Header({
       <div
         style={{
           display: viewMode === 'driver' ? 'none' : 'flex',
-          alignItems: 'center',
-          gap: 8,
         }}
         className="desktop-telemetry"
       >
-        <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>REGION</span>
-          <span style={{ fontWeight: 600, color: 'var(--accent-action)' }}>NER Corridors</span>
+        <div className="tag-badge telemetry-badge-region">
+          <span className="telemetry-label">REGION</span>
+          <span className="telemetry-val-accent">NER Corridors</span>
         </div>
 
-        <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>FLEET</span>
-          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{vehicleCount} Active</span>
+        <div className="tag-badge">
+          <span className="telemetry-label">FLEET</span>
+          <span className="telemetry-val">{vehicleCount} Active</span>
         </div>
 
-        <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>INCIDENTS</span>
-          <span style={{ fontWeight: 600, color: incidentCount > 0 ? 'var(--status-caution)' : 'var(--text-muted)' }}>
+        <div className="tag-badge">
+          <span className="telemetry-label">INCIDENTS</span>
+          <span
+            className="telemetry-val"
+            style={{ color: incidentCount > 0 ? 'var(--status-caution)' : 'var(--text-muted)' }}
+          >
             {incidentCount} Reported
           </span>
         </div>
 
-        <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>HAZARD ZONES</span>
-          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{hazardZoneCount} Zones</span>
+        <div className="tag-badge">
+          <span className="telemetry-label">HAZARDS</span>
+          <span className="telemetry-val">{hazardZoneCount} Zones</span>
         </div>
 
-        <div className="tag-badge" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>CORRIDORS</span>
-          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{accessibilityCount} Monitored</span>
+        <div className="tag-badge telemetry-badge-corridors">
+          <span className="telemetry-label">CORRIDORS</span>
+          <span className="telemetry-val">{accessibilityCount} Monitored</span>
         </div>
       </div>
 
       {/* Right Actions & Live Status */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="header-right-actions">
         {viewMode === 'operations' && (
-          <>
+          <div className="header-panel-toggles">
             <button
+              type="button"
               onClick={() => setShowLeftPanel(!showLeftPanel)}
               className={`btn-preset ${showLeftPanel ? 'active' : ''}`}
               title={showLeftPanel ? 'Hide Route Planner' : 'Show Route Planner'}
@@ -105,6 +104,7 @@ export default function Header({
             </button>
 
             <button
+              type="button"
               onClick={() => setShowRightPanel(!showRightPanel)}
               className={`btn-preset ${showRightPanel ? 'active' : ''}`}
               title={showRightPanel ? 'Hide Intelligence Panel' : 'Show Intelligence Panel'}
@@ -113,107 +113,75 @@ export default function Header({
             </button>
 
             <button
+              type="button"
               onClick={() => setShowLegend(!showLegend)}
               className={`btn-preset ${showLegend ? 'active' : ''}`}
               title={showLegend ? 'Hide Map Legend' : 'Show Map Legend'}
             >
               Legend
             </button>
-
-            {setShowAuthPanel && (
-              <button
-                onClick={() => setShowAuthPanel(!showAuthPanel)}
-                className={`btn-preset ${showAuthPanel ? 'active' : ''}`}
-                title={showAuthPanel ? 'Hide Access Control Panel' : 'Show Access Control Panel'}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 5,
-                  borderColor: isAuthenticated ? 'var(--status-safe)' : 'var(--accent-action)',
-                  color: isAuthenticated ? '#4ADE80' : 'var(--accent-action)',
-                  fontWeight: 600,
-                }}
-              >
-                <Icon name="lock" size={13} />
-                <span>
-                  {isAuthenticated
-                    ? user?.role === 'field_officer'
-                      ? 'Field Officer'
-                      : user?.role === 'district_admin'
-                      ? 'District Admin'
-                      : 'MDoNER Admin'
-                    : 'Access Control'}
-                </span>
-              </button>
-            )}
-          </>
+          </div>
         )}
 
         <button
+          type="button"
           onClick={onToggleViewMode}
-          className="btn-preset"
-          title={viewMode === 'operations' ? 'Switch to Driver Mode' : 'Switch to Command Center'}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            fontWeight: 600,
-            borderColor: viewMode === 'driver' ? 'var(--status-safe)' : 'var(--accent-action)',
-            color: viewMode === 'driver' ? '#4ADE80' : 'var(--accent-action)',
-          }}
+          className="btn-preset header-mode-btn"
+          title={viewMode === 'operations' ? 'Switch to Driver Turn-by-Turn' : 'Switch to Command Center'}
         >
           <Icon name={viewMode === 'driver' ? 'terminal' : 'truck'} size={14} />
-          <span>{viewMode === 'driver' ? 'Operations Console' : 'Driver Mode'}</span>
+          <span className="header-mode-text">{viewMode === 'driver' ? 'Console' : 'Driver Mode'}</span>
         </button>
 
-        {/* Authentication State */}
+        {/* Authentication State & Direct Route Navigation */}
         {isAuthenticated && user ? (
           <div className="auth-user-badge-container">
-            <div
+            <button
+              type="button"
               className="auth-user-pill"
-              onClick={onOpenAuth}
-              title={`Logged in as ${user.email} (${user.role})`}
+              onClick={onNavigateToAuth}
+              title={`Logged in as ${user.email} (${user.role}). Click for Officer Account details.`}
             >
-              <Icon name="user" size={13} color="var(--accent-action)" />
-              <span className="auth-user-name" style={{ fontWeight: 600 }}>
+              <div className="auth-user-avatar">
+                {user.email.charAt(0).toUpperCase()}
+              </div>
+              <span className="auth-user-name">
                 {user.email.split('@')[0]}
               </span>
               <span className={`auth-user-role-tag ${user.role}`}>
                 {user.role === 'field_officer'
-                  ? 'Field Officer'
+                  ? 'Field'
                   : user.role === 'district_admin'
-                  ? 'District Admin'
+                  ? 'Admin'
                   : 'MDoNER'}
               </span>
-            </div>
+            </button>
             <button
               type="button"
               className="auth-logout-btn"
-              onClick={logout}
-              title="Sign Out of Session"
+              onClick={(e) => {
+                e.stopPropagation();
+                logout();
+              }}
+              title="Sign Out"
+              aria-label="Sign Out"
             >
               <Icon name="log-out" size={13} />
-              <span>Exit</span>
             </button>
           </div>
         ) : (
           <button
             type="button"
-            onClick={onOpenAuth}
+            onClick={onNavigateToAuth}
             className="btn-preset btn-auth-signin"
-            title="Sign In or Register Official Account"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
+            title="Sign In or Register Official Account on /auth"
           >
-            <Icon name="lock" size={14} />
+            <Icon name="lock" size={13} />
             <span>Sign In</span>
           </button>
         )}
 
-        <div className={`status-pill ${isLive ? 'live' : 'disconnected'}`} title={`Last refreshed: ${lastUpdated}`}>
+        <div className={`status-pill ${isLive ? 'live' : 'disconnected'}`} title={`Telemetry feed: ${lastUpdated}`}>
           <span className="status-pulse" />
           <span>{isLive ? 'LIVE' : 'OFFLINE'}</span>
         </div>

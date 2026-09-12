@@ -15,9 +15,7 @@ import LoadingIndicator from './components/LoadingIndicator';
 import ErrorMessage from './components/ErrorMessage';
 import DriverMode from './components/driver/DriverMode';
 import RoleSelect from './components/RoleSelect';
-import AuthModal from './components/auth/AuthModal';
 import AuthPage from './components/auth/AuthPage';
-import AuthPanel from './components/AuthPanel';
 import { Icon } from './components/common/Icon';
 import { PRESET_CORRIDORS } from './config/map-theme';
 import { computeLiveTripProgress, type LiveTripProgress } from './utils/eta';
@@ -57,7 +55,6 @@ export default function App() {
   const [showRightPanel, setShowRightPanel] = useState<boolean>(true);
   const [showLegend, setShowLegend] = useState<boolean>(true);
   const [showHazardZones, setShowHazardZones] = useState<boolean>(true);
-  const [showAuthPanel, setShowAuthPanel] = useState<boolean>(true);
 
   // Mobile navigation tab
   const [activeMobileTab, setActiveMobileTab] = useState<MobileTab>('map');
@@ -76,24 +73,29 @@ export default function App() {
   });
   const isDriverMode = viewMode === 'driver';
 
-  // Authentication states
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('auth') === 'login' || params.get('auth') === 'modal';
-    } catch {
-      return false;
+  // Dedicated Client-side Route State (/ or /auth or /login)
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.pathname;
     }
+    return '/';
   });
 
-  const [showAuthPage, setShowAuthPage] = useState<boolean>(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('auth') === 'page' || window.location.pathname === '/auth';
-    } catch {
-      return false;
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigate = (path: string) => {
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', path);
+      setCurrentPath(path);
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
-  });
+  };
 
   // Human-readable destination label for driver turn-by-turn guidance
   const [destinationLabel, setDestinationLabel] = useState<string>('Shillong, Meghalaya');
@@ -391,8 +393,14 @@ export default function App() {
     }
   };
 
-  if (showAuthPage) {
-    return <AuthPage onBackToDashboard={() => setShowAuthPage(false)} />;
+  const isAuthRoute =
+    currentPath === '/auth' ||
+    currentPath === '/login' ||
+    currentPath.startsWith('/auth') ||
+    (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('auth') === 'page');
+
+  if (isAuthRoute) {
+    return <AuthPage onBackToDashboard={() => navigate('/')} />;
   }
 
   return (
@@ -411,11 +419,9 @@ export default function App() {
         setShowRightPanel={setShowRightPanel}
         showLegend={showLegend}
         setShowLegend={setShowLegend}
-        showAuthPanel={showAuthPanel}
-        setShowAuthPanel={setShowAuthPanel}
         viewMode={viewMode || 'operations'}
         onToggleViewMode={handleToggleViewMode}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onNavigateToAuth={() => navigate('/auth')}
       />
 
       {/* 2. MapLibre Hero Viewport */}
@@ -537,18 +543,6 @@ export default function App() {
           aria-label="Risk and Corridor Intelligence Panel"
         >
           <div className="dock-panel-body">
-            {/* Access & Role Intelligence Panel */}
-            {showAuthPanel && (
-              <AuthPanel
-                onIncidentReported={() => {
-                  fetch(`${API_BASE_URL}/incidents`)
-                    .then((r) => r.json())
-                    .then((data) => setIncidents(data))
-                    .catch(() => {});
-                }}
-              />
-            )}
-
             {/* AI Route Risk Gauge & Contributors */}
             {optimization ? (
               <RiskPanel
@@ -638,11 +632,7 @@ export default function App() {
         <RoleSelect onSelectMode={handleSelectRole} />
       )}
 
-      {/* 8. Authentication Modal */}
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
+
     </div>
   );
 }
