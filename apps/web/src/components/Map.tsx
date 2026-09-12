@@ -142,6 +142,29 @@ export const MapComponent = forwardRef<MapHandle, MapProps>(function MapComponen
       });
     }
 
+    // Dynamic Route Line Color by Risk Tier & Objective
+    const riskLevel = selected.risk?.overallLevel;
+    const lineColor =
+      riskLevel === 'HIGH' || riskLevel === 'CRITICAL'
+        ? '#F97316' // High Risk / Fastest warning orange
+        : riskLevel === 'LOW'
+        ? '#10B981' // Safest emerald green
+        : '#38BDF8'; // Balanced sky blue
+
+    const haloColor =
+      riskLevel === 'HIGH' || riskLevel === 'CRITICAL'
+        ? '#DC2626'
+        : riskLevel === 'LOW'
+        ? '#059669'
+        : '#2563EB';
+
+    if (map.getLayer('selected-route-line')) {
+      map.setPaintProperty('selected-route-line', 'line-color', lineColor);
+    }
+    if (map.getLayer('selected-route-halo')) {
+      map.setPaintProperty('selected-route-halo', 'line-color', haloColor);
+    }
+
     // Update Origin and Destination Markers
     const coords = selected.geometry.coordinates;
     if (coords.length > 1) {

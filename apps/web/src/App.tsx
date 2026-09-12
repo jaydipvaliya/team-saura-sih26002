@@ -259,15 +259,21 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle Route Calculation (supports optional destination label for driver guidance)
+  // Handle Route Calculation (supports optional destination label and preference override)
   const handleCalculateRoute = async (
     customOrigin?: string,
     customDest?: string,
     customDestLabel?: string,
-    overrideProfile?: string
+    overrideProfile?: string,
+    overridePref?: RoutingPreference,
   ) => {
     const origStr = customOrigin || originInput;
     const destStr = customDest || destInput;
+    const activePref = overridePref || preference;
+
+    if (overridePref && overridePref !== preference) {
+      setPreference(overridePref);
+    }
 
     if (customDestLabel) {
       setDestinationLabel(customDestLabel);
@@ -310,7 +316,7 @@ export default function App() {
         body: JSON.stringify({
           origin: { latitude: originLat, longitude: originLon },
           destination: { latitude: destinationLat, longitude: destinationLon },
-          routingPreference: preference,
+          routingPreference: activePref,
           routingOptions: { profile: routingProfile },
         }),
       });
@@ -496,7 +502,9 @@ export default function App() {
               setDestInput={setDestInput}
               preference={preference}
               setPreference={setPreference}
-              onCalculate={handleCalculateRoute}
+              onCalculate={(customOrig, customDest, customPref) =>
+                handleCalculateRoute(customOrig, customDest, undefined, undefined, customPref)
+              }
               isRouting={isRouting}
             />
 
@@ -522,7 +530,14 @@ export default function App() {
             )}
 
             {/* Route Comparison Matrix */}
-            {optimization && <RouteComparison optimization={optimization} />}
+            {optimization && (
+              <RouteComparison
+                optimization={optimization}
+                onSelectCandidate={(pref) =>
+                  handleCalculateRoute(undefined, undefined, undefined, undefined, pref)
+                }
+              />
+            )}
 
             {/* Why SauraRoute Selected This Route */}
             {optimization && <RouteReasonPanel optimization={optimization} />}

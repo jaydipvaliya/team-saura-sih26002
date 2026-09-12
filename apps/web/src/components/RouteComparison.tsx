@@ -1,9 +1,10 @@
-import type { RouteOptimizationResult, CandidateRouteProfile } from '../types/api';
+import type { RouteOptimizationResult, CandidateRouteProfile, RoutingPreference } from '../types/api';
 import { RISK_LEVEL_THEME } from '../config/map-theme';
 import { Icon } from './common/Icon';
 
 interface RouteComparisonProps {
   optimization: RouteOptimizationResult;
+  onSelectCandidate?: (pref: RoutingPreference) => void;
 }
 
 function formatDuration(seconds: number): string {
@@ -15,7 +16,7 @@ function formatDuration(seconds: number): string {
   return `${minutes} min`;
 }
 
-export default function RouteComparison({ optimization }: RouteComparisonProps) {
+export default function RouteComparison({ optimization, onSelectCandidate }: RouteComparisonProps) {
   const { selectedRoute, baselineRoute, candidates, preference, optimization: optMeta } = optimization;
 
   // Render only the routes the engine actually generated. Do not bucket a
@@ -25,6 +26,12 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
     candidates && candidates.length > 0 ? candidates : [selectedRoute];
   const hasAlternatives = candidateList.length > 1;
   const selectedDiffersFromBaseline = selectedRoute.candidateId !== baselineRoute.candidateId;
+
+  const inferCandidatePref = (candidate: CandidateRouteProfile, idx: number): RoutingPreference => {
+    if (candidate.candidateId.includes('fastest') || idx === 0) return 'FASTEST';
+    if (candidate.candidateId.includes('safest') || idx === 2) return 'SAFEST';
+    return 'BALANCED';
+  };
 
   return (
     <div className="intel-card">
@@ -85,17 +92,23 @@ export default function RouteComparison({ optimization }: RouteComparisonProps) 
               const isSelected = candidate.candidateId === selectedRoute.candidateId;
               const riskTheme = RISK_LEVEL_THEME[candidate.risk.overallLevel] || RISK_LEVEL_THEME.MEDIUM;
 
+              const inferredPref = inferCandidatePref(candidate, candidateList.indexOf(candidate));
+
               return (
                 <div
                   key={candidate.candidateId}
+                  onClick={() => onSelectCandidate?.(inferredPref)}
+                  title={`Switch to ${candidate.name}`}
                   style={{
-                    backgroundColor: isSelected ? 'rgba(229, 152, 58, 0.1)' : 'var(--color-bg-base)',
+                    backgroundColor: isSelected ? 'rgba(229, 152, 58, 0.12)' : 'var(--color-bg-base)',
                     border: isSelected ? '1.5px solid var(--color-accent-amber)' : '1px solid var(--color-border-subtle)',
                     borderRadius: 6,
                     padding: '8px',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 5,
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 4 }}>

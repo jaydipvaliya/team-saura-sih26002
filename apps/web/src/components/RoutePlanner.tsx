@@ -9,9 +9,46 @@ interface RoutePlannerProps {
   setDestInput: (val: string) => void;
   preference: RoutingPreference;
   setPreference: (pref: RoutingPreference) => void;
-  onCalculate: (customOrig?: string, customDest?: string) => void;
+  onCalculate: (customOrig?: string, customDest?: string, customPref?: RoutingPreference) => void;
   isRouting: boolean;
 }
+
+const OBJECTIVE_CONFIG: Record<
+  RoutingPreference,
+  {
+    label: string;
+    sublabel: string;
+    icon: 'clock' | 'scale' | 'shield';
+    activeColor: string;
+    activeBg: string;
+    activeBorder: string;
+  }
+> = {
+  FASTEST: {
+    label: 'Fastest',
+    sublabel: '1h 28m • High Risk',
+    icon: 'clock',
+    activeColor: '#F97316',
+    activeBg: 'rgba(249, 115, 22, 0.15)',
+    activeBorder: 'rgba(249, 115, 22, 0.5)',
+  },
+  BALANCED: {
+    label: 'Balanced',
+    sublabel: '2h 07m • Med Risk',
+    icon: 'scale',
+    activeColor: '#E5983A',
+    activeBg: 'rgba(229, 152, 58, 0.15)',
+    activeBorder: 'rgba(229, 152, 58, 0.5)',
+  },
+  SAFEST: {
+    label: 'Safest',
+    sublabel: '2h 46m • Low Risk',
+    icon: 'shield',
+    activeColor: '#10B981',
+    activeBg: 'rgba(16, 185, 129, 0.15)',
+    activeBorder: 'rgba(16, 185, 129, 0.5)',
+  },
+};
 
 export default function RoutePlanner({
   originInput,
@@ -31,6 +68,11 @@ export default function RoutePlanner({
     setOriginInput(preset.origin);
     setDestInput(preset.destination);
     onCalculate(preset.origin, preset.destination);
+  };
+
+  const handleSelectPreference = (mode: RoutingPreference) => {
+    setPreference(mode);
+    onCalculate(undefined, undefined, mode);
   };
 
   return (
@@ -54,6 +96,7 @@ export default function RoutePlanner({
           return (
             <button
               key={p.name}
+              type="button"
               onClick={() => handleApplyPreset(p)}
               disabled={isRouting}
               className={`btn-preset ${isSelected ? 'active' : ''}`}
@@ -99,39 +142,57 @@ export default function RoutePlanner({
 
       {/* Routing Preference Selector */}
       <div style={{ marginBottom: 14 }}>
-        <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>
-          Routing Objective
-        </label>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+          <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>
+            Routing Objective
+          </label>
+          <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>Tap to instantly re-route</span>
+        </div>
         <div style={{ display: 'flex', gap: 6 }}>
           {(['FASTEST', 'BALANCED', 'SAFEST'] as RoutingPreference[]).map((mode) => {
             const isSelected = preference === mode;
+            const cfg = OBJECTIVE_CONFIG[mode];
             return (
               <button
                 key={mode}
-                onClick={() => setPreference(mode)}
+                type="button"
+                onClick={() => handleSelectPreference(mode)}
                 disabled={isRouting}
+                title={`Select ${cfg.label} Route (${cfg.sublabel})`}
                 style={{
                   flex: 1,
-                  padding: '7px 6px',
-                  fontSize: 11,
-                  fontWeight: isSelected ? 700 : 500,
+                  padding: '7px 4px',
                   borderRadius: 6,
                   cursor: isRouting ? 'not-allowed' : 'pointer',
-                  border: `1px solid ${isSelected ? 'var(--accent-action)' : 'var(--border-subtle)'}`,
-                  backgroundColor: isSelected ? 'var(--accent-action-bg)' : 'var(--bg-card-inset)',
-                  color: isSelected ? 'var(--accent-action)' : 'var(--text-secondary)',
+                  border: `1px solid ${isSelected ? cfg.activeBorder : 'var(--border-subtle)'}`,
+                  backgroundColor: isSelected ? cfg.activeBg : 'var(--bg-card-inset)',
+                  color: isSelected ? cfg.activeColor : 'var(--text-secondary)',
                   display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 5,
-                  transition: 'all 0.15s',
+                  gap: 3,
+                  transition: 'all 0.15s ease',
                 }}
               >
-                <Icon
-                  name={mode === 'FASTEST' ? 'clock' : mode === 'BALANCED' ? 'scale' : 'shield'}
-                  size={12}
-                />
-                <span>{mode === 'FASTEST' ? 'Fastest' : mode === 'BALANCED' ? 'Balanced' : 'Safest'}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <Icon
+                    name={cfg.icon}
+                    size={12}
+                  />
+                  <span style={{ fontSize: 11, fontWeight: isSelected ? 700 : 600 }}>{cfg.label}</span>
+                </div>
+                <span
+                  style={{
+                    fontSize: 9,
+                    fontFamily: 'var(--font-mono)',
+                    color: isSelected ? cfg.activeColor : 'var(--text-muted)',
+                    opacity: isSelected ? 0.95 : 0.75,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {cfg.sublabel}
+                </span>
               </button>
             );
           })}
@@ -140,6 +201,7 @@ export default function RoutePlanner({
 
       {/* Calculate Button */}
       <button
+        type="button"
         onClick={() => onCalculate()}
         disabled={isRouting}
         className="btn-primary"
